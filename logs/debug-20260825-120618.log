@@ -1,0 +1,19 @@
+[log] Writing logs to: /home/tadashi/AndroidSaunaProject/logs/debug-20260825-120618.log
+Need adb pair first? [y/N]: [prep] Connecting watch adb endpoint: 192.168.1.6:44259
+[target] Mode: watch-only
+[target] Using watch: 192.168.1.6:44259
+[install] Installing wear app...
+[install-wear] attempt 1/1
+Performing Streamed Install
+Success
+[launch] Launching apps...
+args: [-p, com.totonoi.sauna.wear, 1]
+ arg: "-p"
+ arg: "com.totonoi.sauna.wear"
+ arg: "1"
+data="com.totonoi.sauna.wear"
+// Warning: no activities found for category android.intent.category.MONKEY
+Done.
+Phone logs: adb -s  logcat
+Watch logs: adb -s 192.168.1.6:44259 logcat
+Session log file: /home/tadashi/AndroidSaunaProject/logs/debug-20260825-120618.log

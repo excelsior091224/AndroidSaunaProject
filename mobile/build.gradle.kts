@@ -11,7 +11,8 @@ android {
     compileSdk = 35
 
     defaultConfig {
-        applicationId = "com.totonoi.sauna.mobile"
+        // Handheld/Wear app IDs must match for Data Layer delivery.
+        applicationId = "com.totonoi.sauna"
         minSdk = 26
         targetSdk = 35
         versionCode = 1
@@ -54,4 +55,5 @@ dependencies {
 
     implementation(libs.kotlinx.serialization.json)
     implementation(libs.kotlinx.coroutines.android)
+    implementation(libs.kotlinx.coroutines.play.services)
 }

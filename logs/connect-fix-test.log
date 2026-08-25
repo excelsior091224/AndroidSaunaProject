@@ -1,0 +1,8 @@
+[log] Writing logs to: logs/connect-fix-test.log
+[prep] Connecting to watch over Wi-Fi: 192.168.1.6:5555
+Watch serial '192.168.1.6:5555' not found in adb device list.
+Connected devices:
+List of devices attached
+zh2be22blw             device usb:2-5 product:M06 model:M06 device:M06 transport_id:3
+
+Tip: for --watch-connect use '<watch_ip>:<adb_port>' shown by Wireless debugging.

@@ -11,7 +11,8 @@ android {
     compileSdk = 35
 
     defaultConfig {
-        applicationId = "com.totonoi.sauna.wear"
+        // Handheld/Wear app IDs must match for Data Layer delivery.
+        applicationId = "com.totonoi.sauna"
         minSdk = 30
         targetSdk = 35
         versionCode = 1
