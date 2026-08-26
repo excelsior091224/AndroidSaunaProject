@@ -25,3 +25,4 @@ Wear OSスマートウォッチで心拍数を計測し、サウナ入浴中(サ
 - [03-build-and-environment.md](03-build-and-environment.md): ビルド手順・開発環境の注意点
 - [04-roadmap.md](04-roadmap.md): 未着手タスク・今後の検討事項
 - [05-progress-2026-08-25.md](05-progress-2026-08-25.md): 本日の進捗ログ
+- [06-progress-2026-08-26.md](06-progress-2026-08-26.md): 旧アプリログの回収・解析記録

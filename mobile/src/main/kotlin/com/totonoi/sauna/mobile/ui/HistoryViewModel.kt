@@ -6,6 +6,7 @@ import com.google.android.gms.wearable.DataEvent
 import com.google.android.gms.wearable.Wearable
 import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.viewModelScope
+import com.totonoi.sauna.mobile.notification.SessionNotifier
 import com.totonoi.sauna.mobile.sync.SessionDataLayerImporter
 import com.totonoi.sauna.shared.db.SaunaDatabase
 import com.totonoi.sauna.shared.model.SaunaSession
@@ -13,6 +14,7 @@ import com.totonoi.sauna.shared.repository.RoomSaunaSessionRepository
 import com.totonoi.sauna.shared.sync.DataLayerKeys
 import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.StateFlow
+import kotlinx.coroutines.flow.onEach
 import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.launch
 
@@ -21,6 +23,10 @@ class HistoryViewModel(application: Application) : AndroidViewModel(application)
     private val repository = RoomSaunaSessionRepository(SaunaDatabase.getInstance(application).saunaDao())
     private val importer = SessionDataLayerImporter(application)
     private val dataClient = Wearable.getDataClient(application)
+    private val notifier = SessionNotifier(application)
+
+    // 同期経路(リアルタイム受信/起動時再取り込み)に関わらず、DBの差分だけを見て新規セッションを検知する。
+    private var knownSessionIds: Set<String>? = null
 
     private val dataListener = DataClient.OnDataChangedListener { dataEvents ->
         var shouldImport = false
@@ -45,7 +51,18 @@ class HistoryViewModel(application: Application) : AndroidViewModel(application)
     }
 
     val sessions: StateFlow<List<SaunaSession>> = repository.observeSessions()
+        .onEach { list -> detectAndNotifyNewSessions(list) }
         .stateIn(viewModelScope, SharingStarted.WhileSubscribed(5000), emptyList())
+
+    private fun detectAndNotifyNewSessions(sessions: List<SaunaSession>) {
+        val currentIds = sessions.map { it.id }.toSet()
+        val previousIds = knownSessionIds
+        if (previousIds != null) {
+            val newIds = currentIds - previousIds
+            sessions.filter { it.id in newIds }.forEach { notifier.notifyNewSession(it) }
+        }
+        knownSessionIds = currentIds
+    }
 
     init {
         dataClient.addListener(dataListener)

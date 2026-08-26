@@ -1,6 +1,7 @@
 package com.totonoi.sauna.wear
 
 import android.Manifest
+import android.os.Build
 import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
@@ -14,9 +15,16 @@ class MainActivity : ComponentActivity() {
         ActivityResultContracts.RequestPermission(),
     ) { /* 拒否された場合は心拍データが取得できないだけで、UIはそのまま動作させる */ }
 
+    private val requestNotifications = registerForActivityResult(
+        ActivityResultContracts.RequestPermission(),
+    ) { /* 拒否されても計測自体は継続できるようにする */ }
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         requestBodySensors.launch(Manifest.permission.BODY_SENSORS)
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
+            requestNotifications.launch(Manifest.permission.POST_NOTIFICATIONS)
+        }
 
         setContent {
             MaterialTheme {
