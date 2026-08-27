@@ -3,6 +3,7 @@ package com.totonoi.sauna.mobile.sync
 import com.google.android.gms.wearable.DataEvent
 import com.google.android.gms.wearable.DataMapItem
 import com.google.android.gms.wearable.WearableListenerService
+import com.totonoi.sauna.mobile.notification.SessionNotifier
 import com.totonoi.sauna.shared.db.SaunaDatabase
 import com.totonoi.sauna.shared.model.PhaseSegment
 import com.totonoi.sauna.shared.model.SaunaSession
@@ -13,7 +14,11 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.serialization.json.Json
 
-/** Wear側から送られてきたセッションデータを受信し、スマホ側のRoom DBに保存する。 */
+/**
+ * Wear側から送られてきたセッションデータを受信し、スマホ側のRoom DBに保存する。
+ * スマホアプリがフォアグラウンドで起動していなくてもシステムがこのServiceを起動して呼び出すため、
+ * 通知もここで出すことで「アプリを開かないと通知が来ない」問題を避ける。
+ */
 class SessionSyncListenerService : WearableListenerService() {
 
     private val scope = CoroutineScope(Dispatchers.IO)
@@ -21,6 +26,7 @@ class SessionSyncListenerService : WearableListenerService() {
 
     override fun onDataChanged(dataEvents: com.google.android.gms.wearable.DataEventBuffer) {
         val repository = RoomSaunaSessionRepository(SaunaDatabase.getInstance(applicationContext).saunaDao())
+        val notifier = SessionNotifier(applicationContext)
 
         dataEvents.forEach { event ->
             if (event.type != DataEvent.TYPE_CHANGED) return@forEach
@@ -38,7 +44,10 @@ class SessionSyncListenerService : WearableListenerService() {
                 cycleCount = dataMap.getInt(DataLayerKeys.KEY_CYCLE_COUNT),
             )
 
-            scope.launch { repository.saveSession(session) }
+            scope.launch {
+                repository.saveSession(session)
+                notifier.notifyNewSession(session)
+            }
         }
     }
 }

@@ -55,8 +55,11 @@ object TotonoiCalculator {
         // 複数サイクルをこなすほど加点(2セット目以降+3点、最大+9点)
         val cycleBonus = (cycles.size - 1).coerceAtMost(3) * 3.0
         val totalScore = (average + cycleBonus).coerceIn(0.0, 100.0)
+        // average等がNaNになるケース(空リストの平均など)を最終防波堤としてゼロ点に丸める。
+        // NaNはRoomのNOT NULL制約違反やUIのroundToIntクラッシュを引き起こすため必ず除去する。
+        val safeScore = if (totalScore.isNaN()) 0.0 else totalScore
 
-        return TotonoiResult(totalScore = totalScore, cycleScores = cycleScores, cycleCount = cycles.size)
+        return TotonoiResult(totalScore = safeScore, cycleScores = cycleScores, cycleCount = cycles.size)
     }
 
     /** サウナ→水風呂→休憩の並びが揃っているものを1サイクルとして抽出する。 */
@@ -103,6 +106,7 @@ object TotonoiCalculator {
 
     private fun swingScore(sauna: PhaseSegment, coldBath: PhaseSegment, rest: PhaseSegment): Double {
         val peakBpm = (sauna.samples + coldBath.samples).maxOfOrNull { it.bpm } ?: return 0.0
+        if (rest.samples.isEmpty()) return 0.0
         val tailCount = (rest.samples.size * 0.2).toInt().coerceAtLeast(1)
         val troughBpm = rest.samples.takeLast(tailCount).map { it.bpm }.average()
 
