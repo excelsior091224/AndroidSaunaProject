@@ -1,18 +1,31 @@
 package com.totonoi.sauna.mobile.ui
 
+import android.Manifest
+import android.content.pm.PackageManager
+import android.net.Uri
+import android.os.Build
+import android.provider.Settings
 import androidx.activity.compose.BackHandler
+import androidx.activity.compose.rememberLauncherForActivityResult
+import androidx.activity.result.contract.ActivityResultContracts
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.clickable
+import androidx.compose.material3.Button
 import androidx.compose.material3.Card
+import androidx.compose.material3.DropdownMenu
+import androidx.compose.material3.DropdownMenuItem
 import androidx.compose.material3.HorizontalDivider
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
+import androidx.compose.material3.TextButton
 import androidx.compose.material3.TopAppBar
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
@@ -21,8 +34,12 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.unit.dp
+import androidx.core.content.ContextCompat
 import androidx.lifecycle.viewmodel.compose.viewModel
+import com.totonoi.sauna.mobile.theme.ThemeMode
+import com.totonoi.sauna.mobile.theme.ThemePreferences
 import com.totonoi.sauna.shared.model.HeartRateSample
 import com.totonoi.sauna.shared.model.PhaseSegment
 import com.totonoi.sauna.shared.model.SaunaSession
@@ -33,7 +50,7 @@ import kotlin.math.roundToInt
 
 @OptIn(androidx.compose.material3.ExperimentalMaterial3Api::class)
 @Composable
-fun HistoryScreen(viewModel: HistoryViewModel = viewModel()) {
+fun HistoryScreen(viewModel: HistoryViewModel = viewModel(), themePreferences: ThemePreferences? = null) {
     val sessions by viewModel.sessions.collectAsState()
     var selectedSession by remember { mutableStateOf<SaunaSession?>(null) }
 
@@ -45,7 +62,12 @@ fun HistoryScreen(viewModel: HistoryViewModel = viewModel()) {
     }
 
     Scaffold(
-        topBar = { TopAppBar(title = { Text("サウナ ととのい記録") }) },
+        topBar = {
+            TopAppBar(
+                title = { Text("サウナ ととのい記録") },
+                actions = { if (themePreferences != null) ThemeMenuButton(themePreferences) },
+            )
+        },
     ) { padding ->
         LazyColumn(
             modifier = Modifier
@@ -54,11 +76,89 @@ fun HistoryScreen(viewModel: HistoryViewModel = viewModel()) {
                 .padding(12.dp),
             verticalArrangement = Arrangement.spacedBy(8.dp),
         ) {
+            item { NotificationPermissionBanner() }
             if (sessions.isEmpty()) {
                 item { EmptyStateCard() }
             } else {
                 items(sessions) { session ->
                     SessionCard(session = session, onClick = { selectedSession = session })
+                }
+            }
+        }
+    }
+}
+
+@Composable
+private fun ThemeMenuButton(themePreferences: ThemePreferences) {
+    var expanded by remember { mutableStateOf(false) }
+    val currentMode by themePreferences.themeMode.collectAsState()
+
+    Row {
+        TextButton(onClick = { expanded = true }) {
+            Text(
+                when (currentMode) {
+                    ThemeMode.SYSTEM -> "表示: 端末設定"
+                    ThemeMode.LIGHT -> "表示: ライト"
+                    ThemeMode.DARK -> "表示: ダーク"
+                },
+            )
+        }
+        DropdownMenu(expanded = expanded, onDismissRequest = { expanded = false }) {
+            DropdownMenuItem(
+                text = { Text("端末設定に合わせる") },
+                onClick = { themePreferences.setThemeMode(ThemeMode.SYSTEM); expanded = false },
+            )
+            DropdownMenuItem(
+                text = { Text("ライトモード") },
+                onClick = { themePreferences.setThemeMode(ThemeMode.LIGHT); expanded = false },
+            )
+            DropdownMenuItem(
+                text = { Text("ダークモード") },
+                onClick = { themePreferences.setThemeMode(ThemeMode.DARK); expanded = false },
+            )
+        }
+    }
+}
+
+/** 通知が届かず不安にならないよう、通知許可の状態をアプリ内で明示的に確認できるようにする。 */
+@Composable
+private fun NotificationPermissionBanner() {
+    if (Build.VERSION.SDK_INT < Build.VERSION_CODES.TIRAMISU) return
+
+    val context = LocalContext.current
+    var granted by remember {
+        mutableStateOf(
+            ContextCompat.checkSelfPermission(context, Manifest.permission.POST_NOTIFICATIONS) ==
+                PackageManager.PERMISSION_GRANTED,
+        )
+    }
+
+    if (granted) return
+
+    val launcher = rememberLauncherForActivityResult(
+        ActivityResultContracts.RequestPermission(),
+    ) { isGranted -> granted = isGranted }
+
+    Card(modifier = Modifier.fillMaxWidth()) {
+        Column(modifier = Modifier.padding(14.dp), verticalArrangement = Arrangement.spacedBy(8.dp)) {
+            Text(text = "通知が許可されていません", style = MaterialTheme.typography.titleMedium)
+            Text(
+                text = "このままだと時計からの受信が完了しても通知が表示されません。許可すると受信完了がすぐ分かります。",
+                style = MaterialTheme.typography.bodyMedium,
+            )
+            Row(horizontalArrangement = Arrangement.spacedBy(8.dp)) {
+                Button(onClick = { launcher.launch(Manifest.permission.POST_NOTIFICATIONS) }) {
+                    Text("通知を許可する")
+                }
+                TextButton(
+                    onClick = {
+                        val intent = android.content.Intent(Settings.ACTION_APPLICATION_DETAILS_SETTINGS).apply {
+                            data = Uri.fromParts("package", context.packageName, null)
+                        }
+                        context.startActivity(intent)
+                    },
+                ) {
+                    Text("設定を開く")
                 }
             }
         }

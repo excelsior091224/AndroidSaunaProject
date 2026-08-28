@@ -6,6 +6,7 @@ import android.app.PendingIntent
 import android.content.Context
 import android.content.Intent
 import androidx.core.app.NotificationCompat
+import androidx.core.app.NotificationManagerCompat
 import com.totonoi.sauna.mobile.MainActivity
 import com.totonoi.sauna.shared.model.SaunaSession
 
@@ -13,16 +14,21 @@ import com.totonoi.sauna.shared.model.SaunaSession
 class SessionNotifier(private val context: Context) {
 
     companion object {
-        private const val CHANNEL_ID = "session_received"
+        // 旧チャンネルID。importanceを後からコードで変更しても既存インストールには反映されないため、
+        // 一度作成済みのチャンネルは破棄しIDを変えて作り直す。
+        private const val OLD_CHANNEL_ID = "session_received"
+        private const val CHANNEL_ID = "session_received_v2"
         private const val NOTIFICATION_ID_BASE = 2000
     }
 
     init {
         val manager = context.getSystemService(NotificationManager::class.java)
+        manager.deleteNotificationChannel(OLD_CHANNEL_ID)
         val channel = NotificationChannel(
             CHANNEL_ID,
             "ととのい記録の受信通知",
-            NotificationManager.IMPORTANCE_DEFAULT,
+            // 見落とされないよう、通常のバナー通知(ヘッドアップ)として表示させる
+            NotificationManager.IMPORTANCE_HIGH,
         )
         manager.createNotificationChannel(channel)
     }
@@ -39,11 +45,16 @@ class SessionNotifier(private val context: Context) {
             .setSmallIcon(android.R.drawable.ic_popup_reminder)
             .setContentTitle("ととのい記録が届きました")
             .setContentText("ととのい値 ${session.totonoiScore.toInt()} / ${session.cycleCount}セット")
+            .setPriority(NotificationCompat.PRIORITY_HIGH)
             .setAutoCancel(true)
             .setContentIntent(contentIntent)
             .build()
 
-        val manager = context.getSystemService(NotificationManager::class.java)
-        manager.notify(NOTIFICATION_ID_BASE + session.id.hashCode(), notification)
+        // POST_NOTIFICATIONS未許可の場合はSecurityExceptionを避けるためcompat経由でチェック付き送信する
+        NotificationManagerCompat.from(context).apply {
+            if (areNotificationsEnabled()) {
+                notify(NOTIFICATION_ID_BASE + session.id.hashCode(), notification)
+            }
+        }
     }
 }

@@ -115,12 +115,12 @@ private fun HeartRateChart(segments: List<PhaseSegment>, modifier: Modifier = Mo
         fun xOf(timestampMs: Long): Float = ((timestampMs - minTime).toFloat() / timeRange) * width
         fun yOf(bpm: Int): Float = height - ((bpm - minBpm).toFloat() / bpmRange) * height
 
-        // フェーズごとの背景帯
+        // フェーズごとの背景帯(視認性のため濃いめのアルファにしている)
         for (segment in segments) {
             val startX = xOf(segment.startMs)
             val endX = xOf(segment.endMs)
             drawRect(
-                color = phaseColor(segment.phase).copy(alpha = 0.15f),
+                color = phaseColor(segment.phase).copy(alpha = 0.38f),
                 topLeft = Offset(startX, 0f),
                 size = androidx.compose.ui.geometry.Size(width = (endX - startX).coerceAtLeast(1f), height = height),
             )
@@ -131,17 +131,17 @@ private fun HeartRateChart(segments: List<PhaseSegment>, modifier: Modifier = Mo
             val a = allSamples[i]
             val b = allSamples[i + 1]
             drawLine(
-                color = Color(0xFFD81B60),
+                color = Color(0xFF880E4F),
                 start = Offset(xOf(a.timestampMs), yOf(a.bpm)),
                 end = Offset(xOf(b.timestampMs), yOf(b.bpm)),
-                strokeWidth = 4f,
+                strokeWidth = 5f,
             )
         }
     }
 }
 
 private fun phaseColor(phase: SessionPhase): Color = when (phase) {
-    SessionPhase.SAUNA -> Color(0xFFFF7043)
-    SessionPhase.COLD_BATH -> Color(0xFF42A5F5)
-    SessionPhase.REST -> Color(0xFF66BB6A)
+    SessionPhase.SAUNA -> Color(0xFFFF6D00)
+    SessionPhase.COLD_BATH -> Color(0xFF0091EA)
+    SessionPhase.REST -> Color(0xFF00C853)
 }
