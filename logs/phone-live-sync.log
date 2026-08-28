@@ -1,0 +1,212 @@
+--------- beginning of system
+08-28 22:28:18.989 I/ActivityManager( 3468): Start proc 7167:com.google.android.googlequicksearchbox:search/u0a130 for service {com.google.android.googlequicksearchbox/com.google.frameworks.client.data.android.server.tiktok.assistant.SearchProcessEndpointService}
+08-28 22:28:18.989 I/ActivityManager( 3468): ProcessObserver broadcast disabled
+08-28 22:29:26.237 I/ActivityManager( 3468): Start proc 7251:com.google.android.gms.unstable/u0a115 for service {com.google.android.gms/com.google.android.gms.droidguard.DroidGuardService}
+08-28 22:29:26.238 I/ActivityManager( 3468): ProcessObserver broadcast disabled
+08-28 22:29:33.920 I/ActivityManager( 3468): Killing 3082:com.google.android.calendar/u0a156 (adj 935): empty #31
+08-28 22:29:38.090 I/ActivityManager( 3468): Start proc 7365:jp.co.omron.healthcare.omron_connect/u0a356 for broadcast {jp.co.omron.healthcare.omron_connect/jp.co.omron.healthcare.omron_connect.receiver.CloudEventReceiver}
+08-28 22:29:38.091 I/ActivityManager( 3468): ProcessObserver broadcast disabled
+08-28 22:29:40.609 I/ActivityManager( 3468): Killing 3265:com.android.providers.calendar/u0a63 (adj 935): empty #31
+08-28 22:29:56.665 I/ActivityManager( 3468): Killing 3042:com.macromill.airsmobileappli/u0a200 (adj 935): empty #31
+08-28 22:30:18.725 I/ActivityManager( 3468): Start proc 7462:com.fcnt.mobile_phone.batterymonitor/u0a203 for broadcast {com.fcnt.mobile_phone.batterymonitor/com.fcnt.mobile_phone.batterymonitor.bm.MonitorBatteryReceiver}
+08-28 22:30:18.725 I/ActivityManager( 3468): ProcessObserver broadcast disabled
+08-28 22:30:18.841 I/ActivityManager( 3468): Killing 2797:jp.mobirydays/u0a394 (adj 925): empty #31
+08-28 22:30:27.334 I/ActivityManager( 3468): Start proc 7486:global.nature.remo/u0a354 for broadcast {global.nature.remo/com.google.firebase.iid.FirebaseInstanceIdReceiver}
+08-28 22:30:27.335 I/ActivityManager( 3468): ProcessObserver broadcast disabled
+08-28 22:30:27.615 I/ActivityManager( 3468): Killing 2655:com.android.DeviceAsWebcam/1000 (adj 915): empty #31
+08-28 22:31:03.258 I/ActivityManager( 3468): Background started FGS: Allowed [callingPackage: io.homeassistant.companion.android; callingUid: 10437; uidState: TRNB; uidBFSL: n/a; intent: Intent { act=ACTION_START_FOREGROUND xflg=0x4 cmp=io.homeassistant.companion.android/androidx.work.impl.foreground.SystemForegroundService (has extras) }; code:SYSTEM_ALLOW_LISTED; tempAllowListReason:<,reasonCode:SYSTEM_ALLOW_LISTED,duration:9223372036854775807,callingUid:-1>; allowWiu:-1; targetSdkVersion:36; callerTargetSdkVersion:36; startForegroundCount:0; bindFromPackage:null: isBindService:false]
+08-28 22:31:03.272 W/ActivityManager( 3468): Foreground service started from background can not have location/camera/microphone access: service io.homeassistant.companion.android/androidx.work.impl.foreground.SystemForegroundService
+08-28 22:31:03.273 I/ActivityManager( 3468): Background started FGS: Allowed [callingPackage: io.homeassistant.companion.android; callingUid: 10437; uidState: FGS ; uidBFSL: [BFSL]; intent: Intent { act=ACTION_START_FOREGROUND cmp=io.homeassistant.companion.android/androidx.work.impl.foreground.SystemForegroundService }; code:PROC_STATE_FGS; tempAllowListReason:<,reasonCode:SYSTEM_ALLOW_LISTED,duration:9223372036854775807,callingUid:-1>; allowWiu:-1; targetSdkVersion:36; callerTargetSdkVersion:36; startForegroundCount:0; bindFromPackage:null: isBindService:false]
+08-28 22:31:03.306 W/ActivityManager( 3468): Foreground service started from background can not have location/camera/microphone access: service io.homeassistant.companion.android/androidx.work.impl.foreground.SystemForegroundService
+08-28 22:31:03.306 I/ActivityManager( 3468): Background started FGS: Allowed [callingPackage: io.homeassistant.companion.android; callingUid: 10437; uidState: FGS ; uidBFSL: [BFSL]; intent: Intent { act=ACTION_START_FOREGROUND cmp=io.homeassistant.companion.android/androidx.work.impl.foreground.SystemForegroundService }; code:PROC_STATE_FGS; tempAllowListReason:<,reasonCode:SYSTEM_ALLOW_LISTED,duration:9223372036854775807,callingUid:-1>; allowWiu:-1; targetSdkVersion:36; callerTargetSdkVersion:36; startForegroundCount:1; bindFromPackage:null: isBindService:false]
+08-28 22:33:44.577 I/ActivityManager( 3468): Start proc 7787:com.android.vending:isolated_service:com.google.android.finsky.verifier.apkanalysis.service.ApkContentsScanService/u0i752 for service {com.android.vending/com.google.android.finsky.verifier.apkanalysis.service.ApkContentsScanService}
+08-28 22:33:44.578 I/ActivityManager( 3468): ProcessObserver broadcast disabled
+08-28 22:33:45.505 I/ActivityManager( 3468): Killing 7787:com.android.vending:isolated_service:com.google.android.finsky.verifier.apkanalysis.service.ApkContentsScanService/u0a129i752 (adj 0): isolated not needed
+08-28 22:33:49.180 I/ActivityManager( 3468): Force stopping com.totonoi.sauna appid=10443 user=-1: installPackageLI
+08-28 22:33:49.331 I/ActivityManager( 3468): Force stopping com.totonoi.sauna appid=10443 user=0: pkg removed
+08-28 22:33:49.440 I/ActivityManager( 3468): Start proc 7815:com.android.keychain/1000 for service {com.android.keychain/com.android.keychain.KeyChainService}
+08-28 22:33:49.440 I/ActivityManager( 3468): ProcessObserver broadcast disabled
+08-28 22:33:49.463 I/ActivityManager( 3468): Start proc 7816:com.android.vending:background/u0a129 for broadcast {com.android.vending/com.google.android.finsky.packagemonitor.backgroundimpl.BackgroundPackageMonitorReceiverImpl$RegisteredReceiver}
+08-28 22:33:49.463 I/ActivityManager( 3468): ProcessObserver broadcast disabled
+08-28 22:33:49.536 I/ActivityManager( 3468): Start proc 7844:com.google.android.euicc/u0a107 for service {com.google.android.euicc/com.android.euicc.service.EuiccServiceImpl}
+08-28 22:33:49.656 I/ActivityManager( 3468): ProcessObserver broadcast disabled
+08-28 22:33:49.656 W/ActivityManager( 3468): Slow operation: 139ms so far, now at startProcess: done updating pids map
+08-28 22:33:49.676 W/ActivityManager( 3468): Slow operation: 98ms so far, now at finishAttachApplicationInner: after mServices.attachApplicationLocked
+08-28 22:33:49.676 W/ActivityManager( 3468): Slow operation: 98ms so far, now at finishAttachApplicationInner: after dispatching broadcasts
+08-28 22:33:49.682 I/ActivityManager( 3468): Start proc 7865:com.totonoi.sauna/u0a443 for top-activity {com.totonoi.sauna/com.totonoi.sauna.mobile.MainActivity}
+08-28 22:33:49.684 I/ActivityManager( 3468): ProcessObserver broadcast disabled
+08-28 22:33:49.776 I/ActivityManager( 3468): Killing 2681:android.process.media/u0a60 (adj 995): empty #31
+08-28 22:33:49.845 W/ActivityManager( 3468): Slow operation: 53ms so far, now at attachApplicationLocked: immediately after bindApplication
+08-28 22:33:49.845 W/ActivityManager( 3468): Slow operation: 53ms so far, now at attachApplicationLocked: after updateLruProcessLocked
+08-28 22:33:49.850 W/ActivityManager( 3468): Slow operation: 58ms so far, now at attachApplicationLocked: after updateOomAdjLocked
+08-28 22:33:50.406 I/ActivityManager( 3468): Start proc 7989:com.google.android.apps.tachyon/u0a170 for service {com.google.android.apps.tachyon/androidx.work.impl.background.systemjob.SystemJobService}
+08-28 22:33:50.406 I/ActivityManager( 3468): ProcessObserver broadcast disabled
+08-28 22:33:50.424 I/ActivityManager( 3468): Killing 2737:com.google.android.projection.gearhead:car/u0a106 (adj 995): empty #31
+08-28 22:33:50.432 I/ActivityManager( 3468): Start proc 7998:jp.co.sej.app/u0a404 for service {jp.co.sej.app/androidx.work.impl.background.systemjob.SystemJobService}
+08-28 22:33:50.432 I/ActivityManager( 3468): ProcessObserver broadcast disabled
+08-28 22:33:50.447 W/ActivityManager( 3468): Slow operation: 58ms so far, now at startProcess: returned from zygote!
+08-28 22:33:50.462 W/ActivityManager( 3468): Slow operation: 72ms so far, now at startProcess: done updating battery stats
+08-28 22:33:50.462 W/ActivityManager( 3468): Slow operation: 72ms so far, now at startProcess: building log message
+08-28 22:33:50.462 I/ActivityManager( 3468): Start proc 8007:com.amazon.kindle/u0a281 for service {com.amazon.kindle/com.google.android.datatransport.runtime.scheduling.jobscheduling.JobInfoSchedulerService}
+08-28 22:33:50.462 W/ActivityManager( 3468): Slow operation: 72ms so far, now at startProcess: starting to update pids map
+08-28 22:33:50.462 I/ActivityManager( 3468): ProcessObserver broadcast disabled
+08-28 22:33:50.462 W/ActivityManager( 3468): Slow operation: 72ms so far, now at startProcess: done updating pids map
+08-28 22:33:50.462 W/ActivityManager( 3468): Slow operation: 58ms so far, now at startProcess: asking zygote to start proc
+08-28 22:33:50.478 W/ActivityManager( 3468): Slow operation: 74ms so far, now at startProcess: returned from zygote!
+08-28 22:33:50.501 W/ActivityManager( 3468): Slow operation: 97ms so far, now at startProcess: done updating battery stats
+08-28 22:33:50.501 W/ActivityManager( 3468): Slow operation: 97ms so far, now at startProcess: building log message
+08-28 22:33:50.501 I/ActivityManager( 3468): Start proc 8021:com.google.android.apps.youtube.music/u0a143 for service {com.google.android.apps.youtube.music/androidx.work.impl.background.systemjob.SystemJobService}
+08-28 22:33:50.501 W/ActivityManager( 3468): Slow operation: 97ms so far, now at startProcess: starting to update pids map
+08-28 22:33:50.501 I/ActivityManager( 3468): ProcessObserver broadcast disabled
+08-28 22:33:50.501 W/ActivityManager( 3468): Slow operation: 97ms so far, now at startProcess: done updating pids map
+08-28 22:33:50.659 I/ActivityManager( 3468): Killing 2832:com.google.android.projection.gearhead:shared/u0a106 (adj 999): empty #31
+08-28 22:33:51.479 I/ActivityManager( 3468): Killing 26873:com.google.android.apps.turbo/u0a116 (adj 995): empty #31
+08-28 22:33:51.583 I/ActivityManager( 3468): Killing 15129:com.google.android.apps.wellbeing/u0a124 (adj 995): empty #31
+08-28 22:33:52.116 I/ActivityManager( 3468): Killing 28468:com.fujitsu.mobile_phone.HumanCentricSettings/u0a230 (adj 995): empty #31
+08-28 22:33:52.428 I/ActivityManager( 3468): Killing 6220:jp.co.mcdonalds.android/u0a344 (adj 985): empty #31
+08-28 22:33:53.301 I/ActivityManager( 3468): Start proc 8544:com.amazon.mp3/u0a283 for content provider {com.amazon.mp3/com.amazon.mp3.account.auth.AmazonMusicMAPInformationProvider}
+08-28 22:33:53.301 I/ActivityManager( 3468): ProcessObserver broadcast disabled
+08-28 22:33:54.129 I/ActivityManager( 3468): Start proc 8639:com.amazon.avod.thirdpartyclient/u0a361 for content provider {com.amazon.avod.thirdpartyclient/com.amazon.avod.identity.ThirdPartyMAPInformationProvider}
+08-28 22:33:54.129 I/ActivityManager( 3468): ProcessObserver broadcast disabled
+08-28 22:33:54.508 I/ActivityManager( 3468): Killing 5800:com.google.android.webview:sandboxed_process0:org.chromium.content.app.SandboxedProcessService0:0/u0a155i748 (adj 995): empty #31
+08-28 22:33:54.593 W/ActivityManager( 3468): Scheduling restart of crashed service com.google.android.gm/org.chromium.content.app.SandboxedProcessService0:0 in 1000ms for connection
+08-28 22:33:54.994 I/ActivityManager( 3468): Killing 32506:com.google.android.gm/u0a155 (adj 995): empty #31
+08-28 22:33:55.087 I/ActivityManager( 3468): Start proc 8832:com.amazon.mShop.android.shopping/u0a298 for content provider {com.amazon.mShop.android.shopping/com.amazon.mShop.sso.MShopMAPInformationProvider}
+08-28 22:33:55.087 I/ActivityManager( 3468): ProcessObserver broadcast disabled
+08-28 22:33:55.607 I/ActivityManager( 3468): Start proc 8900:com.google.android.webview:sandboxed_process0:org.chromium.content.app.SandboxedProcessService0:0/u0i753 for  {com.google.android.gm/org.chromium.content.app.SandboxedProcessService0:0}
+08-28 22:33:55.607 I/ActivityManager( 3468): ProcessObserver broadcast disabled
+08-28 22:33:55.677 I/ActivityManager( 3468): Killing 6533:com.discord/u0a318 (adj 995): empty #31
+08-28 22:33:55.702 I/ActivityManager( 3468): Start proc 8929:com.amazon.clouddrive.photos/u0a297 for content provider {com.amazon.clouddrive.photos/com.amazon.photos.auth.PhotosMAPInformationProvider}
+08-28 22:33:55.702 I/ActivityManager( 3468): ProcessObserver broadcast disabled
+08-28 22:33:55.741 I/ActivityManager( 3468): Killing 6610:jp.japanpost.jp_bank.bankbookapp/u0a330 (adj 985): empty #31
+08-28 22:33:56.395 I/ActivityManager( 3468): Killing 6701:com.fcnt.mobile_phone.providers.photos/u0a162 (adj 985): empty #31
+08-28 22:33:56.966 I/ActivityManager( 3468): Process com.google.android.webview:sandboxed_process0:org.chromium.content.app.SandboxedProcessService0:0 (pid 8900) has died: fg  SVC 
+08-28 22:34:37.135 I/ActivityManager( 3468): Start proc 9626:com.android.vending:isolated_service:com.google.android.finsky.verifier.apkanalysis.service.ApkContentsScanService/u0i754 for service {com.android.vending/com.google.android.finsky.verifier.apkanalysis.service.ApkContentsScanService}
+08-28 22:34:37.135 I/ActivityManager( 3468): ProcessObserver broadcast disabled
+08-28 22:34:37.573 I/ActivityManager( 3468): Killing 9626:com.android.vending:isolated_service:com.google.android.finsky.verifier.apkanalysis.service.ApkContentsScanService/u0a129i754 (adj 0): isolated not needed
+08-28 22:34:38.472 I/ActivityManager( 3468): Force stopping com.totonoi.sauna appid=10443 user=-1: installPackageLI
+08-28 22:34:38.478 I/ActivityManager( 3468): Killing 7865:com.totonoi.sauna/u0a443 (adj 0): stop com.totonoi.sauna due to installPackageLI
+08-28 22:34:38.555 W/ActivityManager( 3468): setHasOverlayUi called on unknown pid: 7865
+08-28 22:34:38.566 I/ActivityManager( 3468): Force stopping com.totonoi.sauna appid=10443 user=0: pkg removed
+08-28 22:34:38.863 I/ActivityManager( 3468): Start proc 9666:com.totonoi.sauna/u0a443 for top-activity {com.totonoi.sauna/com.totonoi.sauna.mobile.MainActivity}
+08-28 22:34:38.863 I/ActivityManager( 3468): ProcessObserver broadcast disabled
+08-28 22:35:43.133 I/ActivityManager( 3468): Start proc 9826:com.ottsquer/u0a237 for broadcast {com.ottsquer/io.invertase.firebase.messaging.ReactNativeFirebaseMessagingReceiver}
+08-28 22:35:43.133 I/ActivityManager( 3468): ProcessObserver broadcast disabled
+08-28 22:36:33.025 I/ActivityManager( 3468): Start proc 9950:com.google.android.apps.safetyhub/u0a109 for service {com.google.android.apps.safetyhub/androidx.work.impl.background.systemjob.SystemJobService}
+08-28 22:36:33.026 I/ActivityManager( 3468): ProcessObserver broadcast disabled
+08-28 22:36:43.659 I/ActivityManager( 3468): Killing 6787:com.google.android.webview:sandboxed_process0:org.chromium.content.app.SandboxedProcessService0:0/u0a286i751 (adj 995): empty #31
+08-28 22:36:43.708 W/ActivityManager( 3468): Scheduling restart of crashed service jp.co.smbc.direct/org.chromium.content.app.SandboxedProcessService0:0 in 1000ms for connection
+08-28 22:36:44.756 I/ActivityManager( 3468): Start proc 10062:com.google.android.webview:sandboxed_process0:org.chromium.content.app.SandboxedProcessService0:0/u0i755 for  {jp.co.smbc.direct/org.chromium.content.app.SandboxedProcessService0:0}
+08-28 22:36:44.758 I/ActivityManager( 3468): ProcessObserver broadcast disabled
+08-28 22:36:44.816 I/ActivityManager( 3468): Killing 6720:jp.co.smbc.direct/u0a286 (adj 995): empty #31
+08-28 22:36:44.905 I/ActivityManager( 3468): Killing 10062:com.google.android.webview:sandboxed_process0:org.chromium.content.app.SandboxedProcessService0:0/u0a286i755 (adj 0): isolated not needed
+08-28 22:38:46.661 I/ActivityManager( 3468): Start proc 10202:com.fujitsu.mobile_phone.HumanCentricSettings/u0a230 for content provider {com.fujitsu.mobile_phone.HumanCentricSettings/com.fujitsu.mobile_phone.HumanCentricSettings.HumanCentricProvider}
+08-28 22:38:46.662 I/ActivityManager( 3468): ProcessObserver broadcast disabled
+08-28 22:38:46.863 I/ActivityManager( 3468): Start proc 10243:com.google.android.apps.wellbeing/u0a124 for broadcast {com.google.android.apps.wellbeing/com.google.android.apps.wellbeing.fences.screen.ScreenOnOffReceiver_Receiver}
+08-28 22:38:46.864 I/ActivityManager( 3468): ProcessObserver broadcast disabled
+08-28 22:38:47.392 I/ActivityManager( 3468): Killing 6620:com.google.android.apps.photos/u0a187 (adj 995): empty #31
+08-28 22:39:00.274 I/ActivityManager( 3468): Start proc 10374:com.smbc_card.vpass/u0a398 for broadcast {com.smbc_card.vpass/jp.beaconbank.receiver.BleScanBroadcastReceiver}
+08-28 22:39:00.275 I/ActivityManager( 3468): ProcessObserver broadcast disabled
+08-28 22:39:00.732 I/ActivityManager( 3468): Killing 31409:com.google.android.webview:webview_service/u0a133 (adj 995): empty #31
+08-28 22:39:09.030 I/ActivityManager( 3468): Start proc 10478:com.google.android.cellbroadcastreceiver/u0a254 for broadcast {com.google.android.cellbroadcastreceiver/com.android.cellbroadcastreceiver.CellBroadcastReceiver}
+08-28 22:39:09.031 I/ActivityManager( 3468): ProcessObserver broadcast disabled
+08-28 22:39:09.245 I/ActivityManager( 3468): Killing 5966:com.google.android.webview:sandboxed_process0:org.chromium.content.app.SandboxedProcessService0:22/u0a204i749 (adj 905): empty #31
+08-28 22:39:09.293 W/ActivityManager( 3468): Scheduling restart of crashed service com.macromill.honeybee/org.chromium.content.app.SandboxedProcessService0:22 in 1000ms for connection
+08-28 22:39:13.891 I/ActivityManager( 3468): Killing 7026:com.fcnt.mobile_phone.lamembers/u0a122 (adj 995): empty #31
+08-28 22:39:24.694 I/ActivityManager( 3468): Start proc 10681:com.sauna_ikitai/u0a402 for next-top-activity {com.sauna_ikitai/com.sauna_ikitai.MainActivity}
+08-28 22:39:24.694 I/ActivityManager( 3468): ProcessObserver broadcast disabled
+08-28 22:39:25.611 I/ActivityManager( 3468): Killing 7251:com.google.android.gms.unstable/u0a115 (adj 995): empty #31
+08-28 22:39:38.948 I/ActivityManager( 3468): updateOomAdj start time is before than pendingPid added, don't delete it
+08-28 22:39:38.986 I/ActivityManager( 3468): Start proc 11377:com.google.android.youtube/u0a153 for 
+08-28 22:39:38.986 I/ActivityManager( 3468): ProcessObserver broadcast disabled
+08-28 22:39:39.004 I/ActivityManager( 3468): Start proc 11378:jp.pxv.android.sketch/u0a360 for 
+08-28 22:39:39.004 I/ActivityManager( 3468): ProcessObserver broadcast disabled
+08-28 22:39:39.017 I/ActivityManager( 3468): Start proc 11388:xyz.blueskyweb.app/u0a305 for 
+08-28 22:39:39.021 I/ActivityManager( 3468): ProcessObserver broadcast disabled
+08-28 22:39:39.041 W/ActivityManager( 3468): Slow operation: 64ms so far, now at startProcess: returned from zygote!
+08-28 22:39:39.074 W/ActivityManager( 3468): Slow operation: 53ms so far, now at attachApplicationLocked: immediately after bindApplication
+08-28 22:39:39.075 W/ActivityManager( 3468): Slow operation: 53ms so far, now at attachApplicationLocked: after updateLruProcessLocked
+08-28 22:39:39.077 W/ActivityManager( 3468): Slow operation: 55ms so far, now at attachApplicationLocked: after updateOomAdjLocked
+08-28 22:39:39.078 W/ActivityManager( 3468): Slow operation: 101ms so far, now at startProcess: done updating battery stats
+08-28 22:39:39.078 W/ActivityManager( 3468): Slow operation: 101ms so far, now at startProcess: building log message
+08-28 22:39:39.078 I/ActivityManager( 3468): Start proc 11390:com.google.android.gm/u0a155 for 
+08-28 22:39:39.079 W/ActivityManager( 3468): Slow operation: 102ms so far, now at startProcess: starting to update pids map
+08-28 22:39:39.081 I/ActivityManager( 3468): ProcessObserver broadcast disabled
+08-28 22:39:39.081 W/ActivityManager( 3468): Slow operation: 104ms so far, now at startProcess: done updating pids map
+08-28 22:39:39.081 W/ActivityManager( 3468): Slow operation: 102ms so far, now at startProcess: asking zygote to start proc
+08-28 22:39:39.098 W/ActivityManager( 3468): Slow operation: 119ms so far, now at startProcess: returned from zygote!
+08-28 22:39:39.184 W/ActivityManager( 3468): Slow operation: 205ms so far, now at startProcess: done updating battery stats
+08-28 22:39:39.184 W/ActivityManager( 3468): Slow operation: 205ms so far, now at startProcess: building log message
+08-28 22:39:39.184 I/ActivityManager( 3468): Start proc 11420:com.brave.browser/u0a309 for 
+08-28 22:39:39.184 W/ActivityManager( 3468): Slow operation: 205ms so far, now at startProcess: starting to update pids map
+08-28 22:39:39.184 I/ActivityManager( 3468): ProcessObserver broadcast disabled
+08-28 22:39:39.184 W/ActivityManager( 3468): Slow operation: 205ms so far, now at startProcess: done updating pids map
+08-28 22:39:39.184 W/ActivityManager( 3468): Slow operation: 202ms so far, now at startProcess: asking zygote to start proc
+08-28 22:39:39.197 W/ActivityManager( 3468): Slow operation: 215ms so far, now at startProcess: returned from zygote!
+08-28 22:39:39.200 W/ActivityManager( 3468): Slow operation: 219ms so far, now at startProcess: done updating battery stats
+08-28 22:39:39.201 W/ActivityManager( 3468): Slow operation: 219ms so far, now at startProcess: building log message
+08-28 22:39:39.201 I/ActivityManager( 3468): Start proc 11434:com.macromill.airsmobileappli/u0a200 for 
+08-28 22:39:39.201 W/ActivityManager( 3468): Slow operation: 219ms so far, now at startProcess: starting to update pids map
+08-28 22:39:39.203 I/ActivityManager( 3468): ProcessObserver broadcast disabled
+08-28 22:39:39.203 W/ActivityManager( 3468): Slow operation: 221ms so far, now at startProcess: done updating pids map
+08-28 22:39:39.203 W/ActivityManager( 3468): Slow operation: 220ms so far, now at startProcess: asking zygote to start proc
+08-28 22:39:39.216 W/ActivityManager( 3468): Slow operation: 233ms so far, now at startProcess: returned from zygote!
+08-28 22:39:39.216 W/ActivityManager( 3468): Slow operation: 233ms so far, now at startProcess: done updating battery stats
+08-28 22:39:39.216 W/ActivityManager( 3468): Slow operation: 233ms so far, now at startProcess: building log message
+08-28 22:39:39.216 I/ActivityManager( 3468): Start proc 11437:com.edion.members/u0a380 for 
+08-28 22:39:39.216 W/ActivityManager( 3468): Slow operation: 233ms so far, now at startProcess: starting to update pids map
+08-28 22:39:39.217 I/ActivityManager( 3468): ProcessObserver broadcast disabled
+08-28 22:39:39.218 W/ActivityManager( 3468): Slow operation: 235ms so far, now at startProcess: done updating pids map
+08-28 22:39:39.218 W/ActivityManager( 3468): Slow operation: 234ms so far, now at startProcess: asking zygote to start proc
+08-28 22:39:39.239 W/ActivityManager( 3468): Slow operation: 255ms so far, now at startProcess: returned from zygote!
+08-28 22:39:39.240 W/ActivityManager( 3468): Slow operation: 256ms so far, now at startProcess: done updating battery stats
+08-28 22:39:39.240 W/ActivityManager( 3468): Slow operation: 256ms so far, now at startProcess: building log message
+08-28 22:39:39.240 I/ActivityManager( 3468): Start proc 11439:com.google.android.calendar/u0a156 for 
+08-28 22:39:39.240 W/ActivityManager( 3468): Slow operation: 256ms so far, now at startProcess: starting to update pids map
+08-28 22:39:39.240 I/ActivityManager( 3468): ProcessObserver broadcast disabled
+08-28 22:39:39.240 W/ActivityManager( 3468): Slow operation: 256ms so far, now at startProcess: done updating pids map
+08-28 22:39:39.973 I/ActivityManager( 3468): Start proc 11530:com.android.providers.calendar/u0a63 for content provider {com.android.providers.calendar/com.android.providers.calendar.CalendarProvider2}
+08-28 22:39:39.975 I/ActivityManager( 3468): ProcessObserver broadcast disabled
+08-28 22:39:40.239 I/ActivityManager( 3468): Killing 7365:jp.co.omron.healthcare.omron_connect/u0a356 (adj 995): empty #31
+08-28 22:39:40.253 I/ActivityManager( 3468): Killing 7462:com.fcnt.mobile_phone.batterymonitor/u0a203 (adj 995): empty #31
+08-28 22:39:40.340 I/ActivityManager( 3468): Killing 7486:global.nature.remo/u0a354 (adj 995): empty #31
+08-28 22:39:40.447 I/ActivityManager( 3468): Killing 4968:jp.auone.wallet/u0a397 (adj 985): empty #31
+08-28 22:39:40.589 I/ActivityManager( 3468): Killing 4516:com.google.android.webview:sandboxed_process0:org.chromium.content.app.SandboxedProcessService0:56/u0a339i747 (adj 985): empty #31
+08-28 22:39:40.601 I/ActivityManager( 3468): Killing 10681:com.sauna_ikitai/u0a402 (adj 905): remove task
+08-28 22:39:40.731 W/ActivityManager( 3468): Scheduling restart of crashed service com.fitbit.FitbitMobile/org.chromium.content.app.SandboxedProcessService0:56 in 1000ms for connection
+08-28 22:39:40.956 I/ActivityManager( 3468): Killing 7998:jp.co.sej.app/u0a404 (adj 995): empty #31
+08-28 22:39:41.051 I/ActivityManager( 3468): Killing 8021:com.google.android.apps.youtube.music/u0a143 (adj 995): empty #31
+08-28 22:39:41.117 I/ActivityManager( 3468): Killing 7989:com.google.android.apps.tachyon/u0a170 (adj 995): empty #31
+08-28 22:39:41.196 W/ActivityManager( 3468): setHasOverlayUi called on unknown pid: 10681
+08-28 22:39:41.923 I/ActivityManager( 3468): Start proc 11939:com.google.android.webview:sandboxed_process0:org.chromium.content.app.SandboxedProcessService0:0/u0i756 for  {jp.pxv.android.sketch/org.chromium.content.app.SandboxedProcessService0:0}
+08-28 22:39:41.924 I/ActivityManager( 3468): ProcessObserver broadcast disabled
+08-28 22:39:43.281 I/ActivityManager( 3468): Start proc 12132:com.google.android.gms.unstable/u0a115 for service {com.google.android.gms/com.google.android.gms.droidguard.DroidGuardService}
+08-28 22:39:43.281 I/ActivityManager( 3468): ProcessObserver broadcast disabled
+08-28 22:39:44.500 I/ActivityManager( 3468): Start proc 12222:com.google.android.webview:webview_service/u0a133 for service {com.google.android.webview/org.chromium.android_webview.services.VariationsSeedServer}
+08-28 22:39:44.500 I/ActivityManager( 3468): ProcessObserver broadcast disabled
+08-28 22:39:44.582 I/ActivityManager( 3468): Killing 8007:com.amazon.kindle/u0a281 (adj 995): empty #31
+08-28 22:39:50.382 I/ActivityManager( 3468): Killing 8639:com.amazon.avod.thirdpartyclient/u0a361 (adj 995): empty #31
+08-28 22:39:52.373 W/ActivityManager( 3468): stopServiceToken startId 7 is last, but have 1 remaining args
+08-28 22:39:55.434 I/ActivityManager( 3468): Start proc 12254:com.sauna_ikitai/u0a402 for service {com.sauna_ikitai/com.google.android.datatransport.runtime.scheduling.jobscheduling.JobInfoSchedulerService}
+08-28 22:39:55.434 I/ActivityManager( 3468): ProcessObserver broadcast disabled
+08-28 22:39:58.900 I/ActivityManager( 3468): Killing 8544:com.amazon.mp3/u0a283 (adj 995): empty #31
+08-28 22:40:07.407 I/ActivityManager( 3468): Killing 8832:com.amazon.mShop.android.shopping/u0a298 (adj 985): empty #31
+--------- beginning of main
+08-28 22:44:41.590 E/ActivityManager( 3468): Sending non-protected broadcast com.fujitsu.mobile_phone.fjpedometerservice.ACTION_PEDOMETER_ALARM_WAKEUP from system uid 1000 pkg com.fujitsu.mobile_phone.fjserver
+08-28 22:44:41.590 E/ActivityManager( 3468): java.lang.Throwable
+08-28 22:44:41.590 E/ActivityManager( 3468): 	at com.android.server.am.BroadcastController.checkBroadcastFromSystem(BroadcastController.java:2151)
+08-28 22:44:41.590 E/ActivityManager( 3468): 	at com.android.server.am.BroadcastController.broadcastIntentLockedTraced(BroadcastController.java:1649)
+08-28 22:44:41.590 E/ActivityManager( 3468): 	at com.android.server.am.BroadcastController.broadcastIntentLocked(BroadcastController.java:810)
+08-28 22:44:41.590 E/ActivityManager( 3468): 	at com.android.server.am.BroadcastController.broadcastIntentInPackage(BroadcastController.java:777)
+08-28 22:44:41.590 E/ActivityManager( 3468): 	at com.android.server.am.ActivityManagerService$LocalService.broadcastIntentInPackage(ActivityManagerService.java:17426)
+08-28 22:44:41.590 E/ActivityManager( 3468): 	at com.android.server.am.PendingIntentRecord.sendInner(PendingIntentRecord.java:674)
+08-28 22:44:41.590 E/ActivityManager( 3468): 	at com.android.server.am.PendingIntentRecord.sendWithResult(PendingIntentRecord.java:380)
+08-28 22:44:41.590 E/ActivityManager( 3468): 	at com.android.server.am.ActivityManagerService.sendIntentSender(ActivityManagerService.java:5784)
+08-28 22:44:41.590 E/ActivityManager( 3468): 	at android.app.PendingIntent.sendAndReturnResult(PendingIntent.java:1120)
+08-28 22:44:41.590 E/ActivityManager( 3468): 	at android.app.PendingIntent.send(PendingIntent.java:1086)
+08-28 22:44:41.590 E/ActivityManager( 3468): 	at com.android.server.alarm.AlarmManagerService$DeliveryTracker.deliverLocked(AlarmManagerService.java:5358)
+08-28 22:44:41.590 E/ActivityManager( 3468): 	at com.android.server.alarm.AlarmManagerService.deliverAlarmsLocked(AlarmManagerService.java:4322)
+08-28 22:44:41.590 E/ActivityManager( 3468): 	at com.android.server.alarm.AlarmManagerService$AlarmThread.run(AlarmManagerService.java:4598)
+08-28 22:45:00.052 I/ActivityManager( 3468): Start proc 12458:com.google.android.deskclock/u0a177 for broadcast {com.google.android.deskclock/com.android.deskclock.bedtime.BedtimeReceiver}
+08-28 22:45:00.052 I/ActivityManager( 3468): ProcessObserver broadcast disabled
+08-28 22:45:07.625 I/ActivityManager( 3468): Killing 7816:com.android.vending:background/u0a129 (adj 985): empty #31

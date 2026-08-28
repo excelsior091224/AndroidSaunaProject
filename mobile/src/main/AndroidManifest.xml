@@ -26,8 +26,7 @@
                 <action android:name="com.google.android.gms.wearable.BIND_LISTENER" />
                 <data
                     android:scheme="wear"
-                    android:host="*"
-                    android:pathPrefix="/sauna/session" />
+                    android:host="*" />
             </intent-filter>
         </service>
     </application>

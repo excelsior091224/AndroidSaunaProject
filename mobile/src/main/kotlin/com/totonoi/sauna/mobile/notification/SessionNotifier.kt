@@ -34,6 +34,10 @@ class SessionNotifier(private val context: Context) {
     }
 
     fun notifyNewSession(session: SaunaSession) {
+        notifySessionReceived(session.totonoiScore.toInt(), session.cycleCount)
+    }
+
+    fun notifySessionReceived(score: Int, cycleCount: Int) {
         val contentIntent = PendingIntent.getActivity(
             context,
             0,
@@ -44,7 +48,7 @@ class SessionNotifier(private val context: Context) {
         val notification = NotificationCompat.Builder(context, CHANNEL_ID)
             .setSmallIcon(android.R.drawable.ic_popup_reminder)
             .setContentTitle("ととのい記録が届きました")
-            .setContentText("ととのい値 ${session.totonoiScore.toInt()} / ${session.cycleCount}セット")
+            .setContentText("ととのい値 $score / ${cycleCount}セット")
             .setPriority(NotificationCompat.PRIORITY_HIGH)
             .setAutoCancel(true)
             .setContentIntent(contentIntent)
@@ -53,7 +57,7 @@ class SessionNotifier(private val context: Context) {
         // POST_NOTIFICATIONS未許可の場合はSecurityExceptionを避けるためcompat経由でチェック付き送信する
         NotificationManagerCompat.from(context).apply {
             if (areNotificationsEnabled()) {
-                notify(NOTIFICATION_ID_BASE + session.id.hashCode(), notification)
+                notify(NOTIFICATION_ID_BASE, notification)
             }
         }
     }

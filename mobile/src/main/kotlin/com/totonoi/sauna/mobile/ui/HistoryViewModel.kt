@@ -6,6 +6,7 @@ import com.google.android.gms.wearable.DataEvent
 import com.google.android.gms.wearable.Wearable
 import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.viewModelScope
+import com.totonoi.sauna.mobile.notification.SessionNotifier
 import com.totonoi.sauna.mobile.sync.SessionDataLayerImporter
 import com.totonoi.sauna.shared.db.SaunaDatabase
 import com.totonoi.sauna.shared.model.SaunaSession
@@ -21,9 +22,11 @@ class HistoryViewModel(application: Application) : AndroidViewModel(application)
     private val repository = RoomSaunaSessionRepository(SaunaDatabase.getInstance(application).saunaDao())
     private val importer = SessionDataLayerImporter(application)
     private val dataClient = Wearable.getDataClient(application)
+    private val notifier = SessionNotifier(application)
 
-    // 通知自体はバックグラウンドでも動く SessionSyncListenerService 側が担当する。
-    // ここではフォアグラウンド中の一覧即時更新のためだけにDataItem変化を監視する。
+    // 本来はバックグラウンドでも動く SessionSyncListenerService が通知を担当するはずだが、
+    // OS/OEMの背景実行制限で呼ばれない場合があるため、アプリ起動時の取りこぼし救済経路でも
+    // 新規セッションを検知したら念のため通知を出す(二重通知は同一IDで上書きされるだけなので無害)。
 
     private val dataListener = DataClient.OnDataChangedListener { dataEvents ->
         var shouldImport = false
@@ -42,7 +45,7 @@ class HistoryViewModel(application: Application) : AndroidViewModel(application)
 
         if (shouldImport) {
             viewModelScope.launch {
-                importer.importPendingSessions()
+                importer.importPendingSessions().forEach { notifier.notifyNewSession(it) }
             }
         }
     }
@@ -54,7 +57,7 @@ class HistoryViewModel(application: Application) : AndroidViewModel(application)
         dataClient.addListener(dataListener)
         viewModelScope.launch {
             // 時計側からのDataItemを起動時に再取り込みし、配送タイミング差の取りこぼしを防ぐ。
-            importer.importPendingSessions()
+            importer.importPendingSessions().forEach { notifier.notifyNewSession(it) }
         }
     }
 

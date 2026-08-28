@@ -8,11 +8,13 @@ import com.totonoi.sauna.shared.model.PhaseSegment
 import com.totonoi.sauna.shared.model.SaunaSession
 import com.totonoi.sauna.shared.repository.RoomSaunaSessionRepository
 import com.totonoi.sauna.shared.sync.DataLayerKeys
+import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.tasks.await
 import kotlinx.serialization.json.Json
 
 /**
  * 取りこぼし対策として、Data Layer上に残っているセッションDataItemをアプリ起動時に再取り込みする。
+ * 本来のリアルタイムプッシュ(SessionSyncListenerService)が機能しなかった場合の最終防波堤。
  */
 class SessionDataLayerImporter(context: Context) {
 
@@ -20,7 +22,11 @@ class SessionDataLayerImporter(context: Context) {
     private val dataClient = Wearable.getDataClient(context)
     private val json = Json { ignoreUnknownKeys = true }
 
-    suspend fun importPendingSessions() {
+    /** 新規に取り込んだセッションを返す。呼び出し側で通知要否を判断できるようにするため。 */
+    suspend fun importPendingSessions(): List<SaunaSession> {
+        val imported = mutableListOf<SaunaSession>()
+        val existingIds = repository.observeSessions().first().map { it.id }.toSet()
+
         val buffer = dataClient.dataItems.await()
         buffer.use { dataItems ->
             dataItems.forEach { item ->
@@ -39,7 +45,11 @@ class SessionDataLayerImporter(context: Context) {
                     cycleCount = dataMap.getInt(DataLayerKeys.KEY_CYCLE_COUNT),
                 )
                 repository.saveSession(session)
+                if (session.id !in existingIds) {
+                    imported += session
+                }
             }
         }
+        return imported
     }
 }

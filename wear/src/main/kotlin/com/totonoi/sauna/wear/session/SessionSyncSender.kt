@@ -1,6 +1,7 @@
 package com.totonoi.sauna.wear.session
 
 import android.content.Context
+import android.util.Log
 import com.google.android.gms.wearable.PutDataMapRequest
 import com.google.android.gms.wearable.Wearable
 import com.totonoi.sauna.shared.model.PhaseSegment
@@ -14,8 +15,14 @@ import kotlinx.serialization.json.Json
 /** 計測完了したセッションを Wearable Data Layer 経由でスマホ側アプリへ送信する。 */
 class SessionSyncSender(private val context: Context) {
 
+    companion object {
+        private const val TAG = "SessionSyncSender"
+    }
+
     private val json = Json { ignoreUnknownKeys = true }
     private val dataClient = Wearable.getDataClient(context)
+    private val messageClient = Wearable.getMessageClient(context)
+    private val nodeClient = Wearable.getNodeClient(context)
 
     suspend fun sendSession(session: SaunaSession) {
         // 大量サンプル(数百〜千件)のまま送るとBluetooth転送が遅くなるため、送信用に間引く。
@@ -31,6 +38,20 @@ class SessionSyncSender(private val context: Context) {
             dataMap.putString(DataLayerKeys.KEY_SEGMENTS_JSON, json.encodeToString<List<PhaseSegment>>(transferSegments))
         }.asPutDataRequest().setUrgent()
 
-        dataClient.putDataItem(request).await()
+        val notificationPayload = "${session.totonoiScore.toInt()}\t${session.cycleCount}"
+            .encodeToByteArray()
+        val connectedNodes = nodeClient.connectedNodes.await()
+        Log.i(TAG, "Sending notification for ${session.id} to ${connectedNodes.size} node(s)")
+        connectedNodes.forEach { node ->
+            messageClient.sendMessage(
+                node.id,
+                DataLayerKeys.SESSION_NOTIFICATION_PATH,
+                notificationPayload,
+            ).await()
+        }
+
+        Log.i(TAG, "Submitting session ${session.id} to Data Layer")
+        val dataItem = dataClient.putDataItem(request).await()
+        Log.i(TAG, "Session ${session.id} accepted at ${dataItem.uri}")
     }
 }

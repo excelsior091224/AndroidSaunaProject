@@ -1,7 +1,9 @@
 package com.totonoi.sauna.mobile.sync
 
+import android.util.Log
 import com.google.android.gms.wearable.DataEvent
 import com.google.android.gms.wearable.DataMapItem
+import com.google.android.gms.wearable.MessageEvent
 import com.google.android.gms.wearable.WearableListenerService
 import com.totonoi.sauna.mobile.notification.SessionNotifier
 import com.totonoi.sauna.shared.db.SaunaDatabase
@@ -21,10 +23,30 @@ import kotlinx.serialization.json.Json
  */
 class SessionSyncListenerService : WearableListenerService() {
 
+    companion object {
+        private const val TAG = "SessionSyncListener"
+    }
+
     private val scope = CoroutineScope(Dispatchers.IO)
     private val json = Json { ignoreUnknownKeys = true }
 
+    override fun onMessageReceived(messageEvent: MessageEvent) {
+        if (messageEvent.path != DataLayerKeys.SESSION_NOTIFICATION_PATH) return
+
+        val fields = messageEvent.data.decodeToString().split('\t')
+        val score = fields.getOrNull(0)?.toIntOrNull()
+        val cycleCount = fields.getOrNull(1)?.toIntOrNull()
+        if (score == null || cycleCount == null) {
+            Log.w(TAG, "Ignored invalid session notification payload")
+            return
+        }
+
+        Log.i(TAG, "Received immediate notification: score=$score cycles=$cycleCount")
+        SessionNotifier(applicationContext).notifySessionReceived(score, cycleCount)
+    }
+
     override fun onDataChanged(dataEvents: com.google.android.gms.wearable.DataEventBuffer) {
+        Log.i(TAG, "onDataChanged received ${dataEvents.count} event(s)")
         val repository = RoomSaunaSessionRepository(SaunaDatabase.getInstance(applicationContext).saunaDao())
         val notifier = SessionNotifier(applicationContext)
 
@@ -45,8 +67,14 @@ class SessionSyncListenerService : WearableListenerService() {
             )
 
             scope.launch {
-                repository.saveSession(session)
-                notifier.notifyNewSession(session)
+                runCatching {
+                    repository.saveSession(session)
+                    notifier.notifyNewSession(session)
+                }.onSuccess {
+                    Log.i(TAG, "Saved and notified session ${session.id}")
+                }.onFailure { error ->
+                    Log.e(TAG, "Could not process session ${session.id}", error)
+                }
             }
         }
     }

@@ -9,6 +9,7 @@ import android.content.Context
 import android.content.Intent
 import android.os.Build
 import android.os.IBinder
+import android.util.Log
 import androidx.core.app.NotificationCompat
 import com.totonoi.sauna.shared.calculator.TotonoiCalculator
 import com.totonoi.sauna.shared.db.SaunaDatabase
@@ -151,8 +152,9 @@ class MeasurementService : Service() {
         scope.launch {
             repository.saveSession(session)
             runCatching { syncSender.sendSession(session) }
-            // Data Layerへのローカル投入自体はネットワーク未接続でも完了するため、
-            // 送信失敗時もローカル保存は残る。再接続時にOS側で自動同期される。
+                .onFailure { error ->
+                    Log.e("MeasurementService", "Could not submit session ${session.id}", error)
+                }
 
             _uiState.value = _uiState.value.copy(screen = SaunaScreen.Result(result), currentPhase = null)
             stopForeground(STOP_FOREGROUND_REMOVE)
