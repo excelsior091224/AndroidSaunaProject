@@ -79,6 +79,7 @@ class MeasurementService : Service() {
     private lateinit var heartRateMeasurer: HeartRateMeasurer
     private lateinit var repository: RoomSaunaSessionRepository
     private lateinit var syncSender: SessionSyncSender
+    private lateinit var pendingSyncQueue: PendingSessionSyncQueue
 
     private var measureJob: Job? = null
     private var sessionStartMs = 0L
@@ -91,6 +92,7 @@ class MeasurementService : Service() {
         heartRateMeasurer = HeartRateMeasurer(this)
         repository = RoomSaunaSessionRepository(SaunaDatabase.getInstance(this).saunaDao())
         syncSender = SessionSyncSender(this)
+        pendingSyncQueue = PendingSessionSyncQueue(this)
         createNotificationChannel()
     }
 
@@ -151,6 +153,7 @@ class MeasurementService : Service() {
 
         scope.launch {
             repository.saveSession(session)
+            pendingSyncQueue.add(session.id)
             runCatching { syncSender.sendSession(session) }
                 .onFailure { error ->
                     Log.e("MeasurementService", "Could not submit session ${session.id}", error)

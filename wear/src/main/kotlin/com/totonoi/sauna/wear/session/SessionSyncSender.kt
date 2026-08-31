@@ -36,6 +36,7 @@ class SessionSyncSender(private val context: Context) {
             dataMap.putDouble(DataLayerKeys.KEY_TOTONOI_SCORE, session.totonoiScore)
             dataMap.putInt(DataLayerKeys.KEY_CYCLE_COUNT, session.cycleCount)
             dataMap.putString(DataLayerKeys.KEY_SEGMENTS_JSON, json.encodeToString<List<PhaseSegment>>(transferSegments))
+            dataMap.putLong(DataLayerKeys.KEY_SYNC_ATTEMPT_MS, System.currentTimeMillis())
         }.asPutDataRequest().setUrgent()
 
         Log.i(TAG, "Submitting session ${session.id} to Data Layer")

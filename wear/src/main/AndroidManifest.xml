@@ -33,5 +33,13 @@
             android:name="com.totonoi.sauna.wear.session.MeasurementService"
             android:exported="false"
             android:foregroundServiceType="health" />
+
+        <service
+            android:name="com.totonoi.sauna.wear.session.SessionSyncListenerService"
+            android:exported="true">
+            <intent-filter>
+                <action android:name="com.google.android.gms.wearable.BIND_LISTENER" />
+            </intent-filter>
+        </service>
     </application>
 </manifest>

@@ -49,6 +49,7 @@ class SessionSyncListenerService : WearableListenerService() {
         Log.i(TAG, "onDataChanged received ${dataEvents.count} event(s)")
         val repository = RoomSaunaSessionRepository(SaunaDatabase.getInstance(applicationContext).saunaDao())
         val notifier = SessionNotifier(applicationContext)
+        val ackSender = SessionAckSender(applicationContext)
 
         dataEvents.forEach { event ->
             if (event.type != DataEvent.TYPE_CHANGED) return@forEach
@@ -70,6 +71,7 @@ class SessionSyncListenerService : WearableListenerService() {
                 runCatching {
                     repository.saveSession(session)
                     notifier.notifyNewSession(session)
+                    ackSender.sendAck(session.id)
                 }.onSuccess {
                     Log.i(TAG, "Saved and notified session ${session.id}")
                 }.onFailure { error ->

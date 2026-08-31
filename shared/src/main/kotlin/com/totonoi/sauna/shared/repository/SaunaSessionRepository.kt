@@ -11,6 +11,7 @@ import kotlinx.serialization.json.Json
 
 interface SaunaSessionRepository {
     fun observeSessions(): Flow<List<SaunaSession>>
+    suspend fun getSession(id: String): SaunaSession?
     suspend fun saveSession(session: SaunaSession)
 }
 
@@ -20,6 +21,9 @@ class RoomSaunaSessionRepository(private val dao: SaunaDao) : SaunaSessionReposi
 
     override fun observeSessions(): Flow<List<SaunaSession>> =
         dao.observeAll().map { entities -> entities.map { it.toDomain(json) } }
+
+    override suspend fun getSession(id: String): SaunaSession? =
+        dao.getById(id)?.toDomain(json)
 
     override suspend fun saveSession(session: SaunaSession) {
         dao.upsert(session.toEntity(json))

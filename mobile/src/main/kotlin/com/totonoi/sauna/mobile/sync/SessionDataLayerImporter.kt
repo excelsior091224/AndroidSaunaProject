@@ -20,6 +20,7 @@ class SessionDataLayerImporter(context: Context) {
 
     private val repository = RoomSaunaSessionRepository(SaunaDatabase.getInstance(context).saunaDao())
     private val dataClient = Wearable.getDataClient(context)
+    private val ackSender = SessionAckSender(context)
     private val json = Json { ignoreUnknownKeys = true }
 
     /** 新規に取り込んだセッションを返す。呼び出し側で通知要否を判断できるようにするため。 */
@@ -45,6 +46,7 @@ class SessionDataLayerImporter(context: Context) {
                     cycleCount = dataMap.getInt(DataLayerKeys.KEY_CYCLE_COUNT),
                 )
                 repository.saveSession(session)
+                ackSender.sendAck(session.id)
                 if (session.id !in existingIds) {
                     imported += session
                 }
