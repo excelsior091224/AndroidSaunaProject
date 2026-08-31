@@ -38,20 +38,24 @@ class SessionSyncSender(private val context: Context) {
             dataMap.putString(DataLayerKeys.KEY_SEGMENTS_JSON, json.encodeToString<List<PhaseSegment>>(transferSegments))
         }.asPutDataRequest().setUrgent()
 
+        Log.i(TAG, "Submitting session ${session.id} to Data Layer")
+        val dataItem = dataClient.putDataItem(request).await()
+        Log.i(TAG, "Session ${session.id} accepted at ${dataItem.uri}")
+
         val notificationPayload = "${session.totonoiScore.toInt()}\t${session.cycleCount}"
             .encodeToByteArray()
         val connectedNodes = nodeClient.connectedNodes.await()
         Log.i(TAG, "Sending notification for ${session.id} to ${connectedNodes.size} node(s)")
         connectedNodes.forEach { node ->
-            messageClient.sendMessage(
-                node.id,
-                DataLayerKeys.SESSION_NOTIFICATION_PATH,
-                notificationPayload,
-            ).await()
+            runCatching {
+                messageClient.sendMessage(
+                    node.id,
+                    DataLayerKeys.SESSION_NOTIFICATION_PATH,
+                    notificationPayload,
+                ).await()
+            }.onFailure { error ->
+                Log.w(TAG, "Could not send immediate notification to ${node.id}", error)
+            }
         }
-
-        Log.i(TAG, "Submitting session ${session.id} to Data Layer")
-        val dataItem = dataClient.putDataItem(request).await()
-        Log.i(TAG, "Session ${session.id} accepted at ${dataItem.uri}")
     }
 }
