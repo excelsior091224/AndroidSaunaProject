@@ -28,3 +28,4 @@ Wear OSスマートウォッチで心拍数を計測し、サウナ入浴中(サ
 - [06-progress-2026-08-26.md](06-progress-2026-08-26.md): 旧アプリログの回収・解析記録
 - [07-progress-2026-08-27.md](07-progress-2026-08-27.md): 実地テスト結果・クラッシュ修正・UI改善記録
 - [08-progress-2026-08-28.md](08-progress-2026-08-28.md): 通知チャンネル不具合修正・グラフ改善・ダークモード実装
+- [12-cloud-migration-plan.md](12-cloud-migration-plan.md): クラウド保存、認証、Web管理、ConoHa VPS共存の移行計画

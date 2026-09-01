@@ -22,7 +22,9 @@
 
 ## データ・同期
 
-- [ ] クラウド同期(将来検討、現状は未実装・端末内Room DBのみ)
+- [ ] クラウド同期: [12-cloud-migration-plan.md](12-cloud-migration-plan.md) に従い、Appwrite Cloud、Roomキャッシュ、WorkManager、tombstoneによるオフライン・ファースト同期を実装
+- [ ] アカウント: メール/パスワード、Google OAuth、パスキーの実機スパイクと、アカウント連携・切替UIを実装
+- [ ] Web管理画面: 閲覧、編集、削除、アカウント削除を備え、既存ConoHa VPSのCaddyへ別サブドメインで配備
 - [ ] セッションのエクスポート(CSV等)
 
 ## ブランディング・命名
