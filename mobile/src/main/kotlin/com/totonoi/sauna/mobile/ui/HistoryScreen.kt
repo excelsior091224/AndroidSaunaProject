@@ -17,9 +17,11 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.clickable
+import androidx.compose.foundation.BorderStroke
 import androidx.compose.material3.AlertDialog
 import androidx.compose.material3.Button
 import androidx.compose.material3.Card
+import androidx.compose.material3.Checkbox
 import androidx.compose.material3.DropdownMenu
 import androidx.compose.material3.DropdownMenuItem
 import androidx.compose.material3.HorizontalDivider
@@ -55,6 +57,10 @@ fun HistoryScreen(viewModel: HistoryViewModel = viewModel(), themePreferences: T
     val sessions by viewModel.sessions.collectAsState()
     var selectedSession by remember { mutableStateOf<SaunaSession?>(null) }
     var sessionToDelete by remember { mutableStateOf<SaunaSession?>(null) }
+    var selectedSessionIds by remember { mutableStateOf<Set<String>>(emptySet()) }
+    var isSelectionMode by remember { mutableStateOf(false) }
+    var showSelectedDeletionConfirmation by remember { mutableStateOf(false) }
+    val selectionMode = isSelectionMode
 
     sessionToDelete?.let { session ->
         AlertDialog(
@@ -76,6 +82,28 @@ fun HistoryScreen(viewModel: HistoryViewModel = viewModel(), themePreferences: T
         )
     }
 
+    if (showSelectedDeletionConfirmation) {
+        val selectedCount = selectedSessionIds.size
+        AlertDialog(
+            onDismissRequest = { showSelectedDeletionConfirmation = false },
+            title = { Text("${selectedCount}件の記録を削除しますか？") },
+            text = { Text("このスマホの履歴から削除します。時計側の元データは削除されません。") },
+            confirmButton = {
+                TextButton(
+                    onClick = {
+                        viewModel.deleteSessions(selectedSessionIds)
+                        selectedSessionIds = emptySet()
+                        showSelectedDeletionConfirmation = false
+                        isSelectionMode = false
+                    },
+                ) { Text("削除") }
+            },
+            dismissButton = {
+                TextButton(onClick = { showSelectedDeletionConfirmation = false }) { Text("キャンセル") }
+            },
+        )
+    }
+
     val current = selectedSession
     if (current != null) {
         BackHandler(onBack = { selectedSession = null })
@@ -87,11 +115,48 @@ fun HistoryScreen(viewModel: HistoryViewModel = viewModel(), themePreferences: T
         return
     }
 
+    BackHandler(enabled = selectionMode) {
+        selectedSessionIds = emptySet()
+        showSelectedDeletionConfirmation = false
+        isSelectionMode = false
+    }
+
     Scaffold(
         topBar = {
             TopAppBar(
-                title = { Text("サウナ ととのい記録") },
-                actions = { if (themePreferences != null) ThemeMenuButton(themePreferences) },
+                title = {
+                    Text(
+                        if (selectionMode) "${selectedSessionIds.size}件を選択中" else "サウナ ととのい記録",
+                    )
+                },
+                actions = {
+                    if (selectionMode) {
+                        TextButton(
+                            onClick = {
+                                selectedSessionIds = if (selectedSessionIds.size == sessions.size) {
+                                    emptySet()
+                                } else {
+                                    sessions.mapTo(linkedSetOf()) { it.id }
+                                }
+                            },
+                        ) {
+                            Text(if (selectedSessionIds.size == sessions.size) "選択解除" else "全選択")
+                        }
+                        TextButton(
+                            enabled = selectedSessionIds.isNotEmpty(),
+                            onClick = { showSelectedDeletionConfirmation = true },
+                        ) { Text("削除") }
+                        TextButton(
+                            onClick = {
+                                selectedSessionIds = emptySet()
+                                isSelectionMode = false
+                            },
+                        ) { Text("完了") }
+                    } else {
+                        TextButton(onClick = { isSelectionMode = true }) { Text("選択") }
+                        if (themePreferences != null) ThemeMenuButton(themePreferences)
+                    }
+                },
             )
         },
     ) { padding ->
@@ -107,7 +172,22 @@ fun HistoryScreen(viewModel: HistoryViewModel = viewModel(), themePreferences: T
                 item { EmptyStateCard() }
             } else {
                 items(sessions) { session ->
-                    SessionCard(session = session, onClick = { selectedSession = session })
+                        SessionCard(
+                            session = session,
+                            selectionMode = selectionMode,
+                            isSelected = session.id in selectedSessionIds,
+                            onClick = {
+                                if (selectionMode) {
+                                    selectedSessionIds = if (session.id in selectedSessionIds) {
+                                        selectedSessionIds - session.id
+                                    } else {
+                                        selectedSessionIds + session.id
+                                    }
+                                } else {
+                                    selectedSession = session
+                                }
+                            },
+                        )
                 }
             }
         }
@@ -205,7 +285,12 @@ private fun EmptyStateCard() {
 }
 
 @Composable
-private fun SessionCard(session: SaunaSession, onClick: () -> Unit) {
+private fun SessionCard(
+    session: SaunaSession,
+    selectionMode: Boolean,
+    isSelected: Boolean,
+    onClick: () -> Unit,
+) {
     val dateFormat = remember { SimpleDateFormat("yyyy/MM/dd HH:mm", Locale.JAPAN) }
     val stats = remember(session) { session.toDetailStats() }
 
@@ -213,9 +298,15 @@ private fun SessionCard(session: SaunaSession, onClick: () -> Unit) {
         modifier = Modifier
             .padding(4.dp)
             .clickable(onClick = onClick),
+        border = if (isSelected) BorderStroke(2.dp, MaterialTheme.colorScheme.primary) else null,
     ) {
         Column(modifier = Modifier.padding(12.dp), verticalArrangement = Arrangement.spacedBy(6.dp)) {
-            Text(text = dateFormat.format(Date(session.startMs)), style = MaterialTheme.typography.bodyMedium)
+            Row {
+                if (selectionMode) {
+                    Checkbox(checked = isSelected, onCheckedChange = { onClick() })
+                }
+                Text(text = dateFormat.format(Date(session.startMs)), style = MaterialTheme.typography.bodyMedium)
+            }
             Text(
                 text = "ととのい値 ${session.totonoiScore.toInt()} / ${session.cycleCount}セット",
                 style = MaterialTheme.typography.titleLarge,

@@ -74,4 +74,13 @@ class HistoryViewModel(application: Application) : AndroidViewModel(application)
             repository.deleteSession(sessionId)
         }
     }
+
+    fun deleteSessions(sessionIds: Set<String>) {
+        viewModelScope.launch {
+            sessionIds.forEach { sessionId ->
+                deletedSessionStore.add(sessionId)
+                repository.deleteSession(sessionId)
+            }
+        }
+    }
 }
