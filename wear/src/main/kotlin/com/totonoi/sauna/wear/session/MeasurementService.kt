@@ -94,6 +94,9 @@ class MeasurementService : Service() {
         syncSender = SessionSyncSender(this)
         pendingSyncQueue = PendingSessionSyncQueue(this)
         createNotificationChannel()
+        scope.launch {
+            SessionRetrySyncer(applicationContext).retryPending("measurement service created")
+        }
     }
 
     override fun onStartCommand(intent: Intent?, flags: Int, startId: Int): Int {

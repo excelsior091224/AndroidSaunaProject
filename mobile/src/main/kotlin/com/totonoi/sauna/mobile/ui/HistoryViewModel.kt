@@ -7,6 +7,7 @@ import com.google.android.gms.wearable.Wearable
 import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.viewModelScope
 import com.totonoi.sauna.mobile.notification.SessionNotifier
+import com.totonoi.sauna.mobile.sync.DeletedSessionStore
 import com.totonoi.sauna.mobile.sync.SessionDataLayerImporter
 import com.totonoi.sauna.shared.db.SaunaDatabase
 import com.totonoi.sauna.shared.model.SaunaSession
@@ -23,6 +24,7 @@ class HistoryViewModel(application: Application) : AndroidViewModel(application)
     private val importer = SessionDataLayerImporter(application)
     private val dataClient = Wearable.getDataClient(application)
     private val notifier = SessionNotifier(application)
+    private val deletedSessionStore = DeletedSessionStore(application)
 
     // 本来はバックグラウンドでも動く SessionSyncListenerService が通知を担当するはずだが、
     // OS/OEMの背景実行制限で呼ばれない場合があるため、アプリ起動時の取りこぼし救済経路でも
@@ -64,5 +66,12 @@ class HistoryViewModel(application: Application) : AndroidViewModel(application)
     override fun onCleared() {
         dataClient.removeListener(dataListener)
         super.onCleared()
+    }
+
+    fun deleteSession(sessionId: String) {
+        viewModelScope.launch {
+            deletedSessionStore.add(sessionId)
+            repository.deleteSession(sessionId)
+        }
     }
 }

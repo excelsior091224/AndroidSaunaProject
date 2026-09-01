@@ -12,14 +12,14 @@ class SessionRetrySyncer(context: Context) {
     private val repository = RoomSaunaSessionRepository(SaunaDatabase.getInstance(applicationContext).saunaDao())
     private val syncSender = SessionSyncSender(applicationContext)
 
-    suspend fun retryPending() {
+    suspend fun retryPending(reason: String) {
         val pendingIds = queue.ids()
         if (pendingIds.isEmpty()) {
-            Log.i(TAG, "No pending sessions to sync")
+            Log.i(TAG, "No pending sessions to sync; trigger=$reason")
             return
         }
 
-        Log.i(TAG, "Retrying ${pendingIds.size} pending session(s)")
+        Log.i(TAG, "Retrying ${pendingIds.size} pending session(s); trigger=$reason")
         pendingIds.forEach { sessionId ->
             val session = repository.getSession(sessionId)
             if (session == null) {
@@ -30,7 +30,7 @@ class SessionRetrySyncer(context: Context) {
 
             runCatching { syncSender.sendSession(session) }
                 .onSuccess {
-                    Log.i(TAG, "Republished pending session $sessionId")
+                    Log.i(TAG, "Republished pending session $sessionId; awaiting mobile ack")
                 }
                 .onFailure { error ->
                     Log.e(TAG, "Could not retry session $sessionId", error)

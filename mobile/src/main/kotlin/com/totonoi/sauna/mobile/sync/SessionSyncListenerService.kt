@@ -50,6 +50,7 @@ class SessionSyncListenerService : WearableListenerService() {
         val repository = RoomSaunaSessionRepository(SaunaDatabase.getInstance(applicationContext).saunaDao())
         val notifier = SessionNotifier(applicationContext)
         val ackSender = SessionAckSender(applicationContext)
+        val deletedSessionStore = DeletedSessionStore(applicationContext)
 
         dataEvents.forEach { event ->
             if (event.type != DataEvent.TYPE_CHANGED) return@forEach
@@ -69,6 +70,10 @@ class SessionSyncListenerService : WearableListenerService() {
 
             scope.launch {
                 runCatching {
+                    if (deletedSessionStore.contains(session.id)) {
+                        ackSender.sendAck(session.id)
+                        return@runCatching
+                    }
                     repository.saveSession(session)
                     notifier.notifyNewSession(session)
                     ackSender.sendAck(session.id)

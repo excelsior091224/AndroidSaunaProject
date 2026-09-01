@@ -17,6 +17,7 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.clickable
+import androidx.compose.material3.AlertDialog
 import androidx.compose.material3.Button
 import androidx.compose.material3.Card
 import androidx.compose.material3.DropdownMenu
@@ -53,11 +54,36 @@ import kotlin.math.roundToInt
 fun HistoryScreen(viewModel: HistoryViewModel = viewModel(), themePreferences: ThemePreferences? = null) {
     val sessions by viewModel.sessions.collectAsState()
     var selectedSession by remember { mutableStateOf<SaunaSession?>(null) }
+    var sessionToDelete by remember { mutableStateOf<SaunaSession?>(null) }
+
+    sessionToDelete?.let { session ->
+        AlertDialog(
+            onDismissRequest = { sessionToDelete = null },
+            title = { Text("記録を削除しますか？") },
+            text = { Text("このスマホの履歴から削除します。時計側の元データは削除されません。") },
+            confirmButton = {
+                TextButton(
+                    onClick = {
+                        viewModel.deleteSession(session.id)
+                        sessionToDelete = null
+                        selectedSession = null
+                    },
+                ) { Text("削除") }
+            },
+            dismissButton = {
+                TextButton(onClick = { sessionToDelete = null }) { Text("キャンセル") }
+            },
+        )
+    }
 
     val current = selectedSession
     if (current != null) {
         BackHandler(onBack = { selectedSession = null })
-        SessionDetailScreen(session = current, onBack = { selectedSession = null })
+        SessionDetailScreen(
+            session = current,
+            onBack = { selectedSession = null },
+            onDelete = { sessionToDelete = current },
+        )
         return
     }
 

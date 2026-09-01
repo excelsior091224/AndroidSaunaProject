@@ -31,7 +31,7 @@ import java.util.Locale
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun SessionDetailScreen(session: SaunaSession, onBack: () -> Unit) {
+fun SessionDetailScreen(session: SaunaSession, onBack: () -> Unit, onDelete: () -> Unit) {
     val dateFormat = remember { SimpleDateFormat("yyyy/MM/dd HH:mm", Locale.JAPAN) }
     val stats = remember(session) { session.toDetailStats() }
 
@@ -42,6 +42,11 @@ fun SessionDetailScreen(session: SaunaSession, onBack: () -> Unit) {
                 navigationIcon = {
                     TextButton(onClick = onBack) {
                         Text("← 戻る")
+                    }
+                },
+                actions = {
+                    TextButton(onClick = onDelete) {
+                        Text("削除")
                     }
                 },
             )

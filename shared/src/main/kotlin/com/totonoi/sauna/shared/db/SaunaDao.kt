@@ -16,4 +16,7 @@ interface SaunaDao {
 
     @Query("SELECT * FROM sauna_sessions WHERE id = :id")
     suspend fun getById(id: String): SaunaSessionEntity?
+
+    @Query("DELETE FROM sauna_sessions WHERE id = :id")
+    suspend fun deleteById(id: String)
 }

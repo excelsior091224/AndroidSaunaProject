@@ -9,6 +9,7 @@ import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.SupervisorJob
 import kotlinx.coroutines.cancel
+import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 
 class SessionSyncListenerService : WearableListenerService() {
@@ -22,7 +23,7 @@ class SessionSyncListenerService : WearableListenerService() {
 
     override fun onPeerConnected(peer: Node) {
         Log.i(TAG, "Peer connected: ${peer.displayName} (${peer.id})")
-        retryPending("peer connected")
+        retryPendingAfterConnection()
     }
 
     override fun onMessageReceived(messageEvent: MessageEvent) {
@@ -45,8 +46,17 @@ class SessionSyncListenerService : WearableListenerService() {
 
     private fun retryPending(reason: String) {
         scope.launch {
-            Log.i(TAG, "Retry requested: $reason")
-            SessionRetrySyncer(applicationContext).retryPending()
+            SessionRetrySyncer(applicationContext).retryPending(reason)
+        }
+    }
+
+    private fun retryPendingAfterConnection() {
+        scope.launch {
+            val retrySyncer = SessionRetrySyncer(applicationContext)
+            listOf(0L, 5_000L, 20_000L).forEachIndexed { attempt, delayMs ->
+                if (delayMs > 0) delay(delayMs)
+                retrySyncer.retryPending("peer connected attempt ${attempt + 1}")
+            }
         }
     }
 

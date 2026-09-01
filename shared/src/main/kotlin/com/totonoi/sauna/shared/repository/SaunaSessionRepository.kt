@@ -13,6 +13,7 @@ interface SaunaSessionRepository {
     fun observeSessions(): Flow<List<SaunaSession>>
     suspend fun getSession(id: String): SaunaSession?
     suspend fun saveSession(session: SaunaSession)
+    suspend fun deleteSession(id: String)
 }
 
 class RoomSaunaSessionRepository(private val dao: SaunaDao) : SaunaSessionRepository {
@@ -27,6 +28,10 @@ class RoomSaunaSessionRepository(private val dao: SaunaDao) : SaunaSessionReposi
 
     override suspend fun saveSession(session: SaunaSession) {
         dao.upsert(session.toEntity(json))
+    }
+
+    override suspend fun deleteSession(id: String) {
+        dao.deleteById(id)
     }
 
     private fun SaunaSessionEntity.toDomain(json: Json): SaunaSession =
