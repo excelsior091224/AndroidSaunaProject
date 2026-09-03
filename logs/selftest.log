@@ -1,3 +1,0 @@
-[log] Writing logs to: logs/selftest.log
-[prep] Connecting to watch over Wi-Fi: 127.0.0.1:65535
-No adb devices in 'device' state.

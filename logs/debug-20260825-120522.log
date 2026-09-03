@@ -1,7 +1,0 @@
-[log] Writing logs to: /home/tadashi/AndroidSaunaProject/logs/debug-20260825-120522.log
-Need adb pair first? [y/N]: [prep] Connecting watch adb endpoint: 192.168.1.6:44259
-[target] Mode: watch-only
-[target] Using watch: 192.168.1.6:44259
-[install] Installing wear app...
-[install-wear] attempt 1/1
-[install-wear] failed after 1 attempts.
