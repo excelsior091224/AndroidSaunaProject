@@ -21,6 +21,7 @@ fun SaunaApp(viewModel: SessionViewModel = viewModel()) {
             is SaunaScreen.Measuring -> MeasuringScreen(
                 currentPhase = uiState.currentPhase,
                 latestBpm = uiState.latestBpm,
+                elapsedPhaseMs = uiState.elapsedPhaseMs,
                 onSwitchPhase = viewModel::switchPhase,
                 onEnd = viewModel::endSession,
             )

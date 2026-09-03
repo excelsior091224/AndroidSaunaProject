@@ -17,6 +17,7 @@ import com.totonoi.sauna.shared.model.SessionPhase
 fun MeasuringScreen(
     currentPhase: SessionPhase?,
     latestBpm: Int?,
+    elapsedPhaseMs: Long,
     onSwitchPhase: (SessionPhase) -> Unit,
     onEnd: () -> Unit,
 ) {
@@ -28,6 +29,7 @@ fun MeasuringScreen(
         verticalArrangement = Arrangement.spacedBy(6.dp, Alignment.CenterVertically),
     ) {
         Text(text = phaseLabel(currentPhase), style = MaterialTheme.typography.caption1)
+        Text(text = "経過 ${formatElapsed(elapsedPhaseMs)}", style = MaterialTheme.typography.title3)
         Text(text = "${latestBpm ?: "--"} bpm", style = MaterialTheme.typography.display2)
 
         when (currentPhase) {
@@ -54,4 +56,11 @@ private fun phaseLabel(phase: SessionPhase?): String = when (phase) {
     SessionPhase.COLD_BATH -> "水風呂"
     SessionPhase.REST -> "休憩(外気浴)"
     null -> ""
+}
+
+private fun formatElapsed(elapsedMs: Long): String {
+    val totalSeconds = (elapsedMs / 1000L).coerceAtLeast(0L)
+    val minutes = totalSeconds / 60L
+    val seconds = totalSeconds % 60L
+    return "%02d:%02d".format(minutes, seconds)
 }

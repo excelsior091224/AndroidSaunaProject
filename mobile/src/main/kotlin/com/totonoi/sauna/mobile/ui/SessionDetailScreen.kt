@@ -1,6 +1,8 @@
 package com.totonoi.sauna.mobile.ui
 
 import androidx.compose.foundation.Canvas
+import androidx.compose.foundation.rememberScrollState
+import androidx.compose.foundation.verticalScroll
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
@@ -21,6 +23,8 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.geometry.Offset
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
+import com.totonoi.sauna.shared.calculator.CycleScore
+import com.totonoi.sauna.shared.calculator.TotonoiCalculator
 import com.totonoi.sauna.shared.model.HeartRateSample
 import com.totonoi.sauna.shared.model.PhaseSegment
 import com.totonoi.sauna.shared.model.SaunaSession
@@ -28,12 +32,14 @@ import com.totonoi.sauna.shared.model.SessionPhase
 import java.text.SimpleDateFormat
 import java.util.Date
 import java.util.Locale
+import kotlin.math.roundToInt
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun SessionDetailScreen(session: SaunaSession, onBack: () -> Unit, onDelete: () -> Unit) {
     val dateFormat = remember { SimpleDateFormat("yyyy/MM/dd HH:mm", Locale.JAPAN) }
     val stats = remember(session) { session.toDetailStats() }
+    val cycleScores = remember(session) { TotonoiCalculator.calculate(session.segments).cycleScores }
 
     Scaffold(
         topBar = {
@@ -56,7 +62,8 @@ fun SessionDetailScreen(session: SaunaSession, onBack: () -> Unit, onDelete: () 
             modifier = Modifier
                 .fillMaxSize()
                 .padding(padding)
-                .padding(12.dp),
+                .padding(12.dp)
+                .verticalScroll(rememberScrollState()),
             verticalArrangement = Arrangement.spacedBy(12.dp),
         ) {
             Card(modifier = Modifier.fillMaxWidth()) {
@@ -81,6 +88,19 @@ fun SessionDetailScreen(session: SaunaSession, onBack: () -> Unit, onDelete: () 
             }
 
             Card(modifier = Modifier.fillMaxWidth()) {
+                Column(modifier = Modifier.padding(12.dp), verticalArrangement = Arrangement.spacedBy(6.dp)) {
+                    Text(text = "サイクル別スコア", style = MaterialTheme.typography.titleSmall)
+                    if (cycleScores.isEmpty()) {
+                        Text(text = "サイクル別スコアはありません", style = MaterialTheme.typography.bodySmall)
+                    } else {
+                        cycleScores.forEach { score ->
+                            CycleScoreText(score)
+                        }
+                    }
+                }
+            }
+
+            Card(modifier = Modifier.fillMaxWidth()) {
                 Column(modifier = Modifier.padding(12.dp)) {
                     Text(text = "心拍数の推移", style = MaterialTheme.typography.titleSmall)
                     HeartRateChart(
@@ -93,6 +113,20 @@ fun SessionDetailScreen(session: SaunaSession, onBack: () -> Unit, onDelete: () 
                 }
             }
         }
+    }
+}
+
+@Composable
+private fun CycleScoreText(score: CycleScore) {
+    Column(verticalArrangement = Arrangement.spacedBy(2.dp)) {
+        Text(
+            text = "${score.cycleIndex + 1}セット目 ${score.total.roundToInt()}点",
+            style = MaterialTheme.typography.bodyMedium,
+        )
+        Text(
+            text = "回復 ${score.recoveryScore.roundToInt()} / 振れ幅 ${score.swingScore.roundToInt()} / 安定 ${score.stabilityScore.roundToInt()}",
+            style = MaterialTheme.typography.bodySmall,
+        )
     }
 }
 
