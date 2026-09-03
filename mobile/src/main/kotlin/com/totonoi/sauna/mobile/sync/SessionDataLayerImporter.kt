@@ -1,6 +1,7 @@
 package com.totonoi.sauna.mobile.sync
 
 import android.content.Context
+import android.util.Log
 import com.google.android.gms.wearable.DataMapItem
 import com.google.android.gms.wearable.Wearable
 import com.totonoi.sauna.shared.db.SaunaDatabase
@@ -29,6 +30,7 @@ class SessionDataLayerImporter(context: Context) {
         val imported = mutableListOf<SaunaSession>()
         val existingIds = repository.observeSessions().first().map { it.id }.toSet()
 
+        Log.i(TAG, "Starting fallback import; existingSessions=${existingIds.size}")
         val buffer = dataClient.dataItems.await()
         buffer.use { dataItems ->
             dataItems.forEach { item ->
@@ -57,6 +59,11 @@ class SessionDataLayerImporter(context: Context) {
                 }
             }
         }
+        Log.i(TAG, "Fallback import completed; imported=${imported.size}")
         return imported
+    }
+
+    private companion object {
+        private const val TAG = "SessionDataLayerImporter"
     }
 }

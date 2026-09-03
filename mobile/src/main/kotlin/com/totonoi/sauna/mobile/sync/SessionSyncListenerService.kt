@@ -13,6 +13,7 @@ import com.totonoi.sauna.shared.repository.RoomSaunaSessionRepository
 import com.totonoi.sauna.shared.sync.DataLayerKeys
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.SupervisorJob
 import kotlinx.coroutines.launch
 import kotlinx.serialization.json.Json
 
@@ -27,7 +28,7 @@ class SessionSyncListenerService : WearableListenerService() {
         private const val TAG = "SessionSyncListener"
     }
 
-    private val scope = CoroutineScope(Dispatchers.IO)
+    private val scope = CoroutineScope(SupervisorJob() + Dispatchers.IO)
     private val json = Json { ignoreUnknownKeys = true }
 
     override fun onMessageReceived(messageEvent: MessageEvent) {
@@ -74,11 +75,14 @@ class SessionSyncListenerService : WearableListenerService() {
                         ackSender.sendAck(session.id)
                         return@runCatching
                     }
+                    val alreadySaved = repository.getSession(session.id) != null
                     repository.saveSession(session)
-                    notifier.notifyNewSession(session)
+                    if (!alreadySaved) {
+                        notifier.notifyNewSession(session)
+                    }
                     ackSender.sendAck(session.id)
                 }.onSuccess {
-                    Log.i(TAG, "Saved and notified session ${session.id}")
+                    Log.i(TAG, "Processed session ${session.id}; duplicate notification suppressed when already saved")
                 }.onFailure { error ->
                     Log.e(TAG, "Could not process session ${session.id}", error)
                 }

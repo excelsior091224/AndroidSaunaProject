@@ -26,7 +26,7 @@
 - [ ] クラウド同期: [12-cloud-migration-plan.md](12-cloud-migration-plan.md) に従い、Appwrite Cloud、Roomキャッシュ、WorkManager、tombstoneによるオフライン・ファースト同期を実装
 - [ ] アカウント: メール/パスワード、Google OAuth、パスキーの実機スパイクと、アカウント連携・切替UIを実装
 - [ ] Web管理画面: 閲覧、編集、削除、アカウント削除を備え、Cloudflare Workers Static Assetsへ独自サブドメインで配備
-- [ ] セッションのエクスポート(CSV等)
+- [x] セッションのエクスポート(CSV形式を実装済み、実機での保存先・内容確認待ち)
 
 ## ブランディング・命名
 

@@ -3,3 +3,6 @@
 
 # Ignore Gradle build output directory
 build
+
+# Device and application logs can contain tokens or API keys
+logs/

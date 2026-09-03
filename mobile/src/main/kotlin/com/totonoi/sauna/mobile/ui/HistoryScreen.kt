@@ -54,13 +54,27 @@ import kotlin.math.roundToInt
 @OptIn(androidx.compose.material3.ExperimentalMaterial3Api::class)
 @Composable
 fun HistoryScreen(viewModel: HistoryViewModel = viewModel(), themePreferences: ThemePreferences? = null) {
+    val context = LocalContext.current
     val sessions by viewModel.sessions.collectAsState()
     var selectedSession by remember { mutableStateOf<SaunaSession?>(null) }
     var sessionToDelete by remember { mutableStateOf<SaunaSession?>(null) }
     var selectedSessionIds by remember { mutableStateOf<Set<String>>(emptySet()) }
     var isSelectionMode by remember { mutableStateOf(false) }
     var showSelectedDeletionConfirmation by remember { mutableStateOf(false) }
+    var pendingExportCsv by remember { mutableStateOf<String?>(null) }
     val selectionMode = isSelectionMode
+
+    val exportLauncher = rememberLauncherForActivityResult(
+        ActivityResultContracts.CreateDocument("text/csv"),
+    ) { uri ->
+        val csv = pendingExportCsv
+        pendingExportCsv = null
+        if (uri != null && csv != null) {
+            context.contentResolver.openOutputStream(uri)?.bufferedWriter()?.use { writer ->
+                writer.write(csv)
+            }
+        }
+    }
 
     sessionToDelete?.let { session ->
         AlertDialog(
@@ -154,6 +168,13 @@ fun HistoryScreen(viewModel: HistoryViewModel = viewModel(), themePreferences: T
                         ) { Text("完了") }
                     } else {
                         TextButton(onClick = { isSelectionMode = true }) { Text("選択") }
+                        TextButton(
+                            enabled = sessions.isNotEmpty(),
+                            onClick = {
+                                pendingExportCsv = sessions.toCsv()
+                                exportLauncher.launch("sauna-sessions.csv")
+                            },
+                        ) { Text("CSV出力") }
                         if (themePreferences != null) ThemeMenuButton(themePreferences)
                     }
                 },
@@ -361,4 +382,34 @@ internal fun SaunaSession.toDetailStats(): DetailStats {
         coldMin = durationMin(com.totonoi.sauna.shared.model.SessionPhase.COLD_BATH),
         restMin = durationMin(com.totonoi.sauna.shared.model.SessionPhase.REST),
     )
+}
+
+private fun List<SaunaSession>.toCsv(): String = buildString {
+    appendLine("session_id,start_ms,end_ms,score,cycle_count,phase,phase_start_ms,phase_end_ms,sample_timestamp_ms,bpm")
+    this@toCsv.forEach { session ->
+        session.segments.forEach { segment ->
+            segment.samples.forEach { sample ->
+                appendLine(
+                    listOf(
+                        session.id,
+                        session.startMs,
+                        session.endMs,
+                        session.totonoiScore,
+                        session.cycleCount,
+                        segment.phase.name,
+                        segment.startMs,
+                        segment.endMs,
+                        sample.timestampMs,
+                        sample.bpm,
+                    ).joinToString(",") { it.toString().csvEscape() },
+                )
+            }
+        }
+    }
+}
+
+private fun String.csvEscape(): String = if (contains(',') || contains('"') || contains('\n')) {
+    "\"${replace("\"", "\"\"")}\""
+} else {
+    this
 }

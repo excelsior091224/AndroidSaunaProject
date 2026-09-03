@@ -12,11 +12,20 @@ import com.totonoi.sauna.mobile.notification.SessionNotifier
 class SessionImportWorker(context: Context, params: WorkerParameters) : CoroutineWorker(context, params) {
 
     override suspend fun doWork(): Result {
-        val imported = SessionDataLayerImporter(applicationContext).importPendingSessions()
-        if (imported.isNotEmpty()) {
-            val notifier = SessionNotifier(applicationContext)
-            imported.forEach { notifier.notifyNewSession(it) }
+        return runCatching {
+            val imported = SessionDataLayerImporter(applicationContext).importPendingSessions()
+            if (imported.isNotEmpty()) {
+                val notifier = SessionNotifier(applicationContext)
+                imported.forEach { notifier.notifyNewSession(it) }
+            }
+            Result.success()
+        }.getOrElse { error ->
+            android.util.Log.e(TAG, "Session import failed; scheduling retry", error)
+            Result.retry()
         }
-        return Result.success()
+    }
+
+    private companion object {
+        private const val TAG = "SessionImportWorker"
     }
 }
