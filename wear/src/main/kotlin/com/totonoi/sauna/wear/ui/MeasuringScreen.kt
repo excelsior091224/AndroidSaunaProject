@@ -3,7 +3,13 @@ package com.totonoi.sauna.wear.ui
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.Row
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -21,6 +27,8 @@ fun MeasuringScreen(
     onSwitchPhase: (SessionPhase) -> Unit,
     onEnd: () -> Unit,
 ) {
+    var endConfirmationRequired by remember { mutableStateOf(false) }
+
     Column(
         modifier = Modifier
             .fillMaxSize()
@@ -32,21 +40,36 @@ fun MeasuringScreen(
         Text(text = "経過 ${formatElapsed(elapsedPhaseMs)}", style = MaterialTheme.typography.title3)
         Text(text = "${latestBpm ?: "--"} bpm", style = MaterialTheme.typography.display2)
 
-        when (currentPhase) {
-            SessionPhase.SAUNA -> Button(onClick = { onSwitchPhase(SessionPhase.COLD_BATH) }) {
-                Text(text = "水風呂へ")
+        Row(
+            modifier = Modifier.fillMaxWidth(),
+            horizontalArrangement = Arrangement.spacedBy(6.dp),
+        ) {
+            Button(
+                modifier = Modifier.weight(1f),
+                onClick = {
+                    endConfirmationRequired = false
+                    when (currentPhase) {
+                        SessionPhase.SAUNA -> onSwitchPhase(SessionPhase.COLD_BATH)
+                        SessionPhase.COLD_BATH -> onSwitchPhase(SessionPhase.REST)
+                        SessionPhase.REST -> onSwitchPhase(SessionPhase.SAUNA)
+                        null -> Unit
+                    }
+                },
+            ) {
+                Text(text = nextPhaseLabel(currentPhase))
             }
-            SessionPhase.COLD_BATH -> Button(onClick = { onSwitchPhase(SessionPhase.REST) }) {
-                Text(text = "休憩へ")
+            Button(
+                modifier = Modifier.weight(1f),
+                onClick = {
+                    if (endConfirmationRequired) {
+                        onEnd()
+                    } else {
+                        endConfirmationRequired = true
+                    }
+                },
+            ) {
+                Text(text = if (endConfirmationRequired) "終了を確定" else "終了")
             }
-            SessionPhase.REST -> Button(onClick = { onSwitchPhase(SessionPhase.SAUNA) }) {
-                Text(text = "もう1セット")
-            }
-            null -> Unit
-        }
-
-        Button(onClick = onEnd) {
-            Text(text = "終了して記録")
         }
     }
 }
@@ -56,6 +79,13 @@ private fun phaseLabel(phase: SessionPhase?): String = when (phase) {
     SessionPhase.COLD_BATH -> "水風呂"
     SessionPhase.REST -> "休憩(外気浴)"
     null -> ""
+}
+
+private fun nextPhaseLabel(phase: SessionPhase?): String = when (phase) {
+    SessionPhase.SAUNA -> "水風呂へ"
+    SessionPhase.COLD_BATH -> "休憩へ"
+    SessionPhase.REST -> "もう1セット"
+    null -> "次へ"
 }
 
 private fun formatElapsed(elapsedMs: Long): String {
