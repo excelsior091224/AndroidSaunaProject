@@ -25,6 +25,7 @@ import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.SupervisorJob
+import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
@@ -82,6 +83,7 @@ class MeasurementService : Service() {
     private lateinit var pendingSyncQueue: PendingSessionSyncQueue
 
     private var measureJob: Job? = null
+    private var phaseElapsedJob: Job? = null
     private var sessionStartMs = 0L
     private val completedSegments = mutableListOf<PhaseSegment>()
     private var currentSegmentStartMs = 0L
@@ -120,6 +122,7 @@ class MeasurementService : Service() {
 
     private fun handleStart() {
         sessionStartMs = System.currentTimeMillis()
+        measureJob?.cancel()
         completedSegments.clear()
         beginPhase(SessionPhase.SAUNA)
         _uiState.value = _uiState.value.copy(screen = SaunaScreen.Measuring, currentPhase = SessionPhase.SAUNA)
@@ -143,6 +146,7 @@ class MeasurementService : Service() {
     private fun handleEnd() {
         finishCurrentSegment()
         measureJob?.cancel()
+        phaseElapsedJob?.cancel()
 
         val result = TotonoiCalculator.calculate(completedSegments)
         val session = SaunaSession(
@@ -171,7 +175,16 @@ class MeasurementService : Service() {
     private fun beginPhase(phase: SessionPhase) {
         currentSegmentStartMs = System.currentTimeMillis()
         currentSamples = mutableListOf()
-        _uiState.value = _uiState.value.copy(currentPhase = phase)
+        _uiState.value = _uiState.value.copy(currentPhase = phase, elapsedPhaseMs = 0L)
+        phaseElapsedJob?.cancel()
+        phaseElapsedJob = scope.launch {
+            while (true) {
+                delay(1_000L)
+                _uiState.value = _uiState.value.copy(
+                    elapsedPhaseMs = (System.currentTimeMillis() - currentSegmentStartMs).coerceAtLeast(0L),
+                )
+            }
+        }
     }
 
     private fun finishCurrentSegment() {
@@ -205,7 +218,8 @@ class MeasurementService : Service() {
             SessionPhase.REST -> "休憩"
             null -> "計測中"
         }
-        val bpmText = if (bpm != null) "$bpm bpm" else "心拍取得中..."
+        val elapsedText = formatElapsed(_uiState.value.elapsedPhaseMs)
+        val bpmText = if (bpm != null) "$bpm bpm / $elapsedText" else "心拍取得中... / $elapsedText"
 
         val contentIntent = PendingIntent.getActivity(
             this,
@@ -226,5 +240,12 @@ class MeasurementService : Service() {
     private fun updateNotification() {
         val manager = getSystemService(NotificationManager::class.java)
         manager.notify(NOTIFICATION_ID, buildNotification())
+    }
+
+    private fun formatElapsed(elapsedMs: Long): String {
+        val totalSeconds = (elapsedMs / 1000L).coerceAtLeast(0L)
+        val minutes = totalSeconds / 60L
+        val seconds = totalSeconds % 60L
+        return "%02d:%02d".format(minutes, seconds)
     }
 }
