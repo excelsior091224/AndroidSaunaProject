@@ -1,0 +1,14 @@
+<resources>
+    <style name="Theme.Totonoi.Wear" parent="android:style/Theme.DeviceDefault">
+        <item name="android:fontFamily">sans</item>
+        <item name="android:colorAccent">@color/totonoi_orange</item>
+        <item name="android:statusBarColor">@color/totonoi_forest</item>
+        <item name="android:navigationBarColor">@color/totonoi_forest</item>
+    </style>
+
+    <style name="Theme.Totonoi.Wear.Starting" parent="Theme.SplashScreen">
+        <item name="windowSplashScreenBackground">@color/totonoi_forest</item>
+        <item name="windowSplashScreenAnimatedIcon">@drawable/ic_sauna</item>
+        <item name="postSplashScreenTheme">@style/Theme.Totonoi.Wear</item>
+    </style>
+</resources>

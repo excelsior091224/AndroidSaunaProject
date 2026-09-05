@@ -6,8 +6,9 @@ import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.activity.result.contract.ActivityResultContracts
-import androidx.wear.compose.material.MaterialTheme
+import androidx.core.splashscreen.SplashScreen.Companion.installSplashScreen
 import com.totonoi.sauna.wear.ui.SaunaApp
+import com.totonoi.sauna.wear.ui.TotonoiWearTheme
 
 class MainActivity : ComponentActivity() {
 
@@ -20,6 +21,7 @@ class MainActivity : ComponentActivity() {
     ) { /* 拒否されても計測自体は継続できるようにする */ }
 
     override fun onCreate(savedInstanceState: Bundle?) {
+        installSplashScreen()
         super.onCreate(savedInstanceState)
         requestBodySensors.launch(Manifest.permission.BODY_SENSORS)
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
@@ -27,7 +29,7 @@ class MainActivity : ComponentActivity() {
         }
 
         setContent {
-            MaterialTheme {
+            TotonoiWearTheme {
                 SaunaApp()
             }
         }

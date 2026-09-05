@@ -96,6 +96,7 @@ class MeasurementService : Service() {
         syncSender = SessionSyncSender(this)
         pendingSyncQueue = PendingSessionSyncQueue(this)
         createNotificationChannel()
+        startForeground(NOTIFICATION_ID, buildNotification())
         scope.launch {
             SessionRetrySyncer(applicationContext).retryPending("measurement service created")
         }

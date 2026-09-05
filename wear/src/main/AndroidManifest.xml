@@ -8,9 +8,10 @@
 
     <application
         android:allowBackup="true"
+        android:icon="@drawable/ic_sauna"
         android:label="@string/app_name"
         android:supportsRtl="true"
-        android:theme="@android:style/Theme.DeviceDefault">
+        android:theme="@style/Theme.Totonoi.Wear">
 
         <uses-library
             android:name="com.google.android.wearable"
@@ -22,7 +23,7 @@
         <activity
             android:name="com.totonoi.sauna.wear.MainActivity"
             android:exported="true"
-            android:theme="@android:style/Theme.DeviceDefault">
+            android:theme="@style/Theme.Totonoi.Wear.Starting">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
                 <category android:name="android.intent.category.LAUNCHER" />
